@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useChat } from '../hooks/useChat';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { fetchAgents, type Agent } from '../services/agentsApi';
 import { Send, Bot, Sparkles, AlertCircle, Paperclip, X, FileText, Image as ImageIcon, Download, ClipboardList, SquarePen, Clock, Plus, Mail, Database, Terminal, Loader2, ChevronRight, ChevronDown, Globe, Layers, CheckCircle2, Circle } from 'lucide-react';
 import MessageActions from '../components/chat/MessageActions';
 import { ConversationsList } from '../components/chat/ConversationsList';
@@ -214,7 +215,6 @@ const RenderedUIComponents = ({
   );
 };
 import { useAuth } from '../context/AuthContext';
-import BlurText from '../components/reactbits/BlurText';
 import SpotlightCard from '../components/reactbits/SpotlightCard';
 import { AIError, type AIErrorResponse } from '../utils/AIError';
 import { ErrorMessageBubble } from '../components/ErrorMessageBubble';
@@ -371,7 +371,30 @@ const AVAILABLE_INTEGRATIONS: IntegrationMeta[] = [
 
 const ChatPage = () => {
   const { userEmail, userName, userDivision, userPhoto, isAdmin } = useAuth();
-  const { messages, setMessages, streamingState, setStreamingState, conversationId, setConversationId, connectionError, sendMessage: wsSendMessage, regenerate: wsRegenerate, interactedComponents, markComponentInteracted, resetInteractions } = useChat(API_URL);
+  const { messages, setMessages, streamingState, setStreamingState, conversationId, setConversationId, setAgentId, connectionError, sendMessage: wsSendMessage, regenerate: wsRegenerate, interactedComponents, markComponentInteracted, resetInteractions } = useChat(API_URL);
+  const [searchParams] = useSearchParams();
+  // Metadata del agente activo (si /chat?agent=xxx). Se usa para el header.
+  const [activeAgent, setActiveAgent] = useState<Agent | null>(null);
+
+  // Sincronizar agent_id desde la URL al hook + fetchear su metadata
+  useEffect(() => {
+    const aid = searchParams.get('agent') || null;
+    setAgentId(aid);
+    if (!aid) {
+      setActiveAgent(null);
+      return;
+    }
+    // Lookup en el catálogo
+    (async () => {
+      try {
+        const data = await fetchAgents();
+        const a = data.agents.find((x) => x.id === aid);
+        setActiveAgent(a || null);
+      } catch {
+        setActiveAgent(null);
+      }
+    })();
+  }, [searchParams, setAgentId]);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -837,39 +860,9 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 overflow-hidden relative">
+    <div className="flex-1 min-h-0 flex flex-col bg-bg overflow-hidden relative">
 
-      {/* Top bar */}
-      <div className="relative z-20 bg-white border-b border-slate-200 p-4 pt-20 flex-shrink-0 shadow-sm">
-        <div className="flex items-center justify-between lg:pl-72">
-          <div className="flex items-center">
-            <div className="w-10 h-10 bg-plataforma-gris-oscuro rounded-xl flex items-center justify-center mr-3 shadow-sm">
-              <Bot size={20} className="text-white" />
-            </div>
-            <div>
-              <h2 className="font-heading font-semibold text-base text-plataforma-gris-oscuro">
-                Asistente IA Plataforma IA
-              </h2>
-              <p className="text-xs text-slate-500 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                Activo · Powered by Foundry
-              </p>
-            </div>
-          </div>
-          {messages.length > 0 && (
-            <button
-              onClick={handleNewChat}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-600 hover:text-plataforma-gris-oscuro hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-lg transition-all"
-              title="Nuevo chat"
-            >
-              <SquarePen size={15} />
-              <span className="hidden sm:inline">Nuevo chat</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Main area */}
+      {/* Main area: sidebar + columna del chat */}
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar: solo historial de conversaciones (estilo Claude.ai) */}
         <div className="w-72 relative z-20 bg-white border-r border-slate-200 p-5 hidden lg:flex flex-col overflow-y-auto">
@@ -900,83 +893,122 @@ const ChatPage = () => {
 
         {/* Chat area */}
         <div className="flex-1 flex flex-col h-full overflow-hidden">
+          {/* Chat-specific header: alineado a la misma columna que mensajes e input */}
+          <div className="bg-bg-elev border-b border-border-soft flex-shrink-0">
+            <div className="w-full max-w-[820px] mx-auto px-6 py-3.5 flex items-center justify-between">
+              <div className="flex items-center min-w-0">
+                <div className="size-9 rounded-[10px] grid place-items-center bg-ink text-bg-elev mr-3 shrink-0">
+                  <Bot size={18} />
+                </div>
+                <div className="min-w-0">
+                  <h2 className="font-display font-semibold text-sm text-ink truncate">
+                    {activeAgent ? activeAgent.nombre : 'Asistente Plataforma IA'}
+                  </h2>
+                  <p className="text-[11.5px] text-ink-muted flex items-center gap-1.5">
+                    <span className="size-1 rounded-full" style={{ background: 'var(--success-ck)' }} />
+                    {activeAgent ? (
+                      <>
+                        Agente · {activeAgent.categoria}
+                        {activeAgent.division ? ` · ${activeAgent.division}` : ''}
+                      </>
+                    ) : (
+                      'Activo · Claude Sonnet 4.6'
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {activeAgent && (
+                  <Link
+                    to="/agentes"
+                    className="ck-btn ck-btn-ghost text-xs !py-1.5 !px-3"
+                    title="Volver al catálogo"
+                  >
+                    ← Catálogo
+                  </Link>
+                )}
+                {messages.length > 0 && (
+                  <button
+                    onClick={handleNewChat}
+                    className="ck-btn ck-btn-outline text-xs !py-1.5 !px-3"
+                    title="Nuevo chat"
+                  >
+                    <SquarePen size={14} />
+                    <span className="hidden sm:inline">Nuevo chat</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Messages */}
-          <div ref={messagesContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 bg-slate-50">
-            <div className="w-full max-w-5xl mx-auto px-2">
-              {/* Welcome screen */}
+          <div ref={messagesContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 bg-bg">
+            <div className="w-full max-w-[820px] mx-auto px-2">
+              {/* Welcome screen — Claude Design */}
               {messages.length === 0 && !streamingState && (
-                <div className="flex flex-col items-center justify-center py-8 space-y-5 animate-fadeIn">
-                  <div className="w-12 h-12 bg-plataforma-gris-oscuro rounded-xl flex items-center justify-center shadow-md">
-                    <Bot size={24} className="text-white" />
+                <div className="flex flex-col items-center py-8 animate-fadeIn w-full">
+                  <div className="size-14 rounded-2xl bg-ink text-bg-elev grid place-items-center mb-6">
+                    <Bot size={28} />
                   </div>
+                  <h2 className="ck-display text-[38px] text-center leading-tight">
+                    ¿En qué te ayudo hoy?
+                  </h2>
+                  <p className="text-center mt-3 text-ink-muted text-[15px] max-w-[520px]">
+                    Tu asistente inteligente para explorar agentes, aprender conceptos clave y crear soluciones con IA.
+                  </p>
 
-                  <div className="text-center max-w-3xl space-y-3">
-                    <h1 className="font-heading font-black text-plataforma-gris-oscuro text-2xl md:text-3xl lg:text-4xl tracking-tight leading-tight flex flex-row items-center justify-center gap-3 flex-wrap">
-                      <BlurText text="Bienvenido a" delay={50} />
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-plataforma-naranja to-plataforma-amarillo">
-                        IA Plataforma IA
-                      </span>
-                    </h1>
-                    <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
-                      Tu asistente inteligente para explorar agentes, aprender conceptos clave y crear soluciones con IA en minería.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
-                    {quickActions.map((action, index) => (
-                      <SpotlightCard
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 mt-8 w-full">
+                    {quickActions.slice(0, 3).map((action, index) => (
+                      <button
                         key={index}
-                        spotlightColor="rgba(229, 83, 2, 0.2)"
-                        className="bg-white border-slate-200 shadow-sm transition-all group cursor-pointer"
                         onClick={() => handleQuickAction(action)}
+                        className="ck-card p-3.5 text-left text-[12.5px] text-ink-2 leading-snug cursor-pointer transition-all hover:border-[var(--primary-ck)]"
                       >
-                        <div className="p-4 text-sm text-left text-gray-700 h-full relative z-10">
-                          <div className="flex items-start gap-3">
-                            <Sparkles size={16} className="text-plataforma-naranja mt-0.5 flex-shrink-0" />
-                            <span className="leading-relaxed text-xs">{action}</span>
-                          </div>
-                        </div>
-                      </SpotlightCard>
+                        <Sparkles
+                          size={14}
+                          className="inline-block mr-1.5 align-middle"
+                          style={{ color: 'var(--primary-ck)' }}
+                        />
+                        {action}
+                      </button>
                     ))}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 w-full max-w-5xl">
-                    <SpotlightCard
-                      spotlightColor="rgba(0, 152, 170, 0.2)"
-                      className="bg-white border-slate-200 shadow-sm transition-all text-left cursor-pointer"
+                  <div className="grid md:grid-cols-2 gap-4 mt-4 w-full">
+                    <div
                       onClick={() => {
                         setInputValue("Analiza este archivo y dame un resumen con los puntos más importantes");
                         fileInputRef.current?.click();
                       }}
+                      className="ck-card p-4 cursor-pointer transition-all hover:border-[var(--primary-ck)]"
                     >
-                      <div className="p-5 h-full relative z-10">
-                        <h4 className="font-heading font-semibold text-plataforma-gris-oscuro mb-2">Analizar un Documento</h4>
-                        <p className="text-sm text-gray-600 mb-3">
-                          "Sube un Excel, PDF o Word y obtén un resumen con los puntos clave"
-                        </p>
-                        <div className="flex items-center gap-2 text-xs text-plataforma-turquesa font-medium">
-                          <Paperclip size={14} />
-                          <span>Sube tu archivo</span>
-                        </div>
+                      <div className="text-sm font-semibold text-ink">Analizar un documento</div>
+                      <div className="text-[12.5px] text-ink-muted mt-1.5 leading-relaxed">
+                        "Sube un Excel, PDF o Word y obtén un resumen con los puntos clave."
                       </div>
-                    </SpotlightCard>
+                      <button
+                        className="mt-3.5 inline-flex items-center gap-1.5 text-[13px] font-medium"
+                        style={{ color: 'var(--primary-ck)' }}
+                      >
+                        <Paperclip size={14} /> Sube tu archivo
+                      </button>
+                    </div>
 
-                    <SpotlightCard
-                      spotlightColor="rgba(229, 83, 2, 0.2)"
-                      className="bg-white border-slate-200 shadow-sm transition-all text-left cursor-pointer"
+                    <div
                       onClick={() => handleQuickAction("Quiero solicitar un nuevo agente de IA para mi área, ¿cómo lo hago?")}
+                      className="ck-card p-4 cursor-pointer transition-all hover:border-[var(--primary-ck)]"
                     >
-                      <div className="p-5 h-full relative z-10">
-                        <h4 className="font-heading font-semibold text-plataforma-gris-oscuro mb-2">Solicitar un Agente IA</h4>
-                        <p className="text-sm text-gray-600 mb-3">
-                          "Registra tu idea de agente IA en el backlog de IA Plataforma IA"
-                        </p>
-                        <div className="flex items-center gap-2 text-xs text-plataforma-naranja font-medium">
-                          <Sparkles size={14} />
-                          <span>Crea tu solicitud</span>
-                        </div>
+                      <div className="text-sm font-semibold text-ink">Solicitar un agente IA</div>
+                      <div className="text-[12.5px] text-ink-muted mt-1.5 leading-relaxed">
+                        "Registra tu idea de agente IA en el backlog de la plataforma."
                       </div>
-                    </SpotlightCard>
+                      <button
+                        className="mt-3.5 inline-flex items-center gap-1.5 text-[13px] font-medium"
+                        style={{ color: 'var(--primary-ck)' }}
+                      >
+                        <Sparkles size={14} /> Crea tu solicitud
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1310,9 +1342,9 @@ const ChatPage = () => {
 
           </div>
 
-          {/* Input area */}
-          <div className="px-4 py-2 bg-slate-50 flex-shrink-0 z-40">
-            <div className="w-full max-w-4xl mx-auto px-2 relative">
+          {/* Input area — alineada al mismo eje que header + mensajes */}
+          <div className="px-4 py-3 bg-bg border-t border-border-soft flex-shrink-0 z-40">
+            <div className="w-full max-w-[820px] mx-auto px-2 relative">
               {/* Pasted Texts and File Previews - Overlayed */}
               <AnimatePresence>
                 {(pastedTexts.length > 0 || attachedFiles.length > 0) && (

@@ -1,0 +1,99 @@
+name: Deploy Backend → Cloud Run
+
+# Se dispara automáticamente con push a main si cambia algo del backend
+# o del workflow mismo. Se puede correr manualmente desde Actions UI.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plataforma-ia-back/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+env:
+  GCP_PROJECT_ID: plataformaia-496701
+  GCP_REGION: us-central1
+  SERVICE_NAME: plataforma-ia-api
+  RUNNER_SA: plataforma-ia-runner@plataformaia-496701.iam.gserviceaccount.com
+
+# Concurrency: cancela deploys obsoletos si llegan pushes encadenados.
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build + Deploy a Cloud Run
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auth a GCP (service account JSON)
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      # Generamos el .env.cloudrun.yaml en CI a partir de los secretos del repo.
+      # Así nunca tocamos el archivo local (gitignored) y los secretos no
+      # quedan en el repo ni en el output del job.
+      - name: Compose env vars file
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          VERCEL_DOMAIN: ${{ vars.VERCEL_DOMAIN }}
+        run: |
+          cat > plataforma-ia-back/.env.cloudrun.yaml <<EOF
+          ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+          ANTHROPIC_BASE_URL: "https://api.anthropic.com"
+          CHAT_MODEL: "claude-sonnet-4-6"
+          CHAT_TEMPERATURE_STRUCTURED: "0.2"
+          MONGODB_URI: "${MONGODB_URI}"
+          MONGODB_DB_NAME: "plataformaia"
+          GCS_BUCKET_NAME: "plataforma-ia-files"
+          DEMO_AUTH: "true"
+          ALLOWED_ORIGINS: "${VERCEL_DOMAIN:-https://plataforma-ia-front.vercel.app}"
+          ENVIRONMENT: "production"
+          EOF
+          echo "::add-mask::$(grep ANTHROPIC_API_KEY plataforma-ia-back/.env.cloudrun.yaml | head -1)"
+
+      - name: Deploy a Cloud Run
+        working-directory: plataforma-ia-back
+        run: |
+          gcloud run deploy "${SERVICE_NAME}" \
+            --source . \
+            --region "${GCP_REGION}" \
+            --project "${GCP_PROJECT_ID}" \
+            --allow-unauthenticated \
+            --service-account="${RUNNER_SA}" \
+            --timeout=3600 \
+            --concurrency=80 \
+            --memory=1Gi \
+            --min-instances=0 \
+            --max-instances=3 \
+            --env-vars-file=.env.cloudrun.yaml \
+            --quiet
+
+      - name: Health check
+        run: |
+          URL=$(gcloud run services describe "${SERVICE_NAME}" \
+            --region "${GCP_REGION}" --project "${GCP_PROJECT_ID}" \
+            --format='value(status.url)')
+          echo "Service URL: $URL"
+          for i in 1 2 3; do
+            if curl -fsSL --max-time 10 "$URL/health" > /dev/null; then
+              echo "✓ /health responde 200"
+              exit 0
+            fi
+            echo "Reintento $i…"
+            sleep 5
+          done
+          echo "✗ /health no respondió después de 3 intentos"
+          exit 1

@@ -956,6 +956,69 @@ def _format_agent_catalog_block(agents: List[Dict[str, Any]]) -> str:
     )
 
 
+def build_agent_system_prompt(agent: Dict[str, Any]) -> str:
+    """Compone un system prompt especializado a partir de los metadatos
+    del agente del catálogo (nombre, categoría, descripción, casos de uso,
+    beneficios, división). Hereda toda la base del prompt general
+    (instrucciones operativas, tools, agent catalog) y le agrega una sección
+    con el rol específico que el modelo debe encarnar en este chat.
+    """
+    base = build_system_instructions()
+
+    def _fmt_list(items) -> str:
+        if not items:
+            return "(no especificado)"
+        if isinstance(items, str):
+            return f"- {items}"
+        return "\n".join(f"- {it}" for it in items if it)
+
+    nombre = agent.get("nombre") or "Agente"
+    categoria = agent.get("categoria") or "IA"
+    descripcion = agent.get("descripcion") or ""
+    division = agent.get("division") or "Corporativo"
+    casos_uso = agent.get("casos_uso") or []
+    beneficios = agent.get("beneficios") or []
+    creador = agent.get("creador") or ""
+
+    persona_block = f"""
+## TU ROL EN ESTA CONVERSACIÓN
+
+Estás operando como **{nombre}**, un agente especializado del catálogo de
+Plataforma IA, dentro de la categoría **{categoria}** (división: {division}).
+
+### Descripción del agente
+{descripcion}
+
+### Casos de uso principales
+{_fmt_list(casos_uso)}
+
+### Beneficios que aportas al usuario
+{_fmt_list(beneficios)}
+
+{f"### Equipo responsable\\n{creador}" if creador else ""}
+
+---
+
+### Reglas operativas para este rol
+
+1. **Identidad consistente**: cuando te pregunten quién eres o qué haces,
+   preséntate como **{nombre}**. NO te presentes como un asistente genérico
+   ni menciones el catálogo entero — el usuario te eligió específicamente.
+2. **Foco**: prioriza siempre los casos de uso listados arriba. Si la
+   consulta cae fuera de tu dominio, ayuda igualmente pero sugiere
+   amablemente que el usuario consulte el catálogo completo (`/agentes`)
+   para encontrar un agente más especializado.
+3. **Estilo**: adapta el tono al área **{categoria}** — formal y preciso
+   para temas técnicos/jurídicos/financieros, cercano y didáctico para
+   áreas de personas/onboarding.
+4. **Tools disponibles**: mantienes acceso a TODO el toolset de la
+   plataforma (Excel, PDF, dashboards, datalake, etc.). Úsalas cuando
+   ayuden a resolver una tarea del rol que encarnás.
+""".strip()
+
+    return base + "\n\n" + persona_block
+
+
 def build_system_instructions() -> str:
     """Devuelve el system prompt con el catálogo de agentes inyectado dinámicamente.
 
@@ -1018,18 +1081,20 @@ class AzureAIService:
         user_message,
         conversation_history: Optional[list],
         user_context_str: Optional[str] = None,
+        system_instructions_override: Optional[str] = None,
     ) -> List[Dict]:
         """
-        Construye la lista de mensajes para OpenAI.
-        DIFERENCIA vs Anthropic: el system prompt va como primer mensaje
-        con role "system", no como parámetro separado.
-        Si user_message es multimodal (lista con imágenes Anthropic),
-        extrae solo el texto ya que este deployment no soporta visión.
-        Si se pasa user_context_str, se agrega al system prompt.
+        Construye la lista de mensajes en formato interno (estilo OpenAI).
+        El system prompt se concatena como primer mensaje role=system;
+        en la traducción a Anthropic se extrae al parámetro `system`.
+
+        Si `system_instructions_override` se provee (típicamente al
+        ejecutar un agente del catálogo), reemplaza el system prompt
+        global por la versión especializada del agente.
         """
         from app.agents.skill_loader import load_visualization_skills
 
-        system_content = build_system_instructions()
+        system_content = system_instructions_override or build_system_instructions()
         if user_context_str:
             system_content += f"\n\n## Usuario actual:\n{user_context_str}"
 
@@ -1124,6 +1189,7 @@ class AzureAIService:
         conversation_id: Optional[str] = None,
         user_email: Optional[str] = None,
         event_callback: Optional[Callable[[dict], Awaitable[None]]] = None,
+        system_instructions_override: Optional[str] = None,
     ) -> str:
         """
         Envía un mensaje y obtiene la respuesta con soporte de tool calling.
@@ -1178,7 +1244,12 @@ class AzureAIService:
                     )
                 sanitized_history = clean
 
-            messages = self._build_messages(user_message, sanitized_history, user_context_str)
+            messages = self._build_messages(
+                user_message,
+                sanitized_history,
+                user_context_str,
+                system_instructions_override=system_instructions_override,
+            )
             logger.info(f"Enviando mensaje al modelo {config.CHAT_MODEL}")
 
             # Detecta intent dashboard en el mensaje del usuario para forzar

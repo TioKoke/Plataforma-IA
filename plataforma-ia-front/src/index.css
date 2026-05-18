@@ -81,7 +81,7 @@
   }
 }
 
-/* Estilos personalizados Plataforma IA */
+/* ─────────── Plataforma IA — corporate brand palette ─────────── */
 :root {
   --plataforma-naranja: #E55302;
   --plataforma-amarillo: #F4AA00;
@@ -92,6 +92,122 @@
   --plataforma-beige: #C4C1A0;
   --plataforma-verde-oscuro: #106470;
   --plataforma-azul: #0072B1;
+}
+
+/* ─────────── Claude Design tokens (oklch-based) ─────────── */
+@layer base {
+  :root {
+    --bg:           oklch(0.985 0.003 250);
+    --bg-elev:     #ffffff;
+    --bg-muted:    oklch(0.965 0.005 250);
+    --bg-inset:    oklch(0.945 0.006 250);
+
+    --border-soft: oklch(0.915 0.006 250);
+    --border-strong: oklch(0.86 0.008 250);
+
+    --ink:         oklch(0.20 0.015 255);
+    --ink-2:       oklch(0.32 0.012 255);
+    --ink-muted:   oklch(0.52 0.012 255);
+    --ink-muted-soft: oklch(0.66 0.010 255);
+
+    /* Primary — default indigo (swap via [data-primary] on <html>) */
+    --primary-ck:      oklch(0.50 0.16 258);
+    --primary-h:       oklch(0.56 0.17 258);
+    --primary-soft:    oklch(0.96 0.025 258);
+    --primary-ink:     oklch(0.35 0.18 258);
+    --primary-fg:      #ffffff;
+
+    --success-ck:      oklch(0.62 0.14 155);
+    --success-soft:    oklch(0.94 0.04 155);
+  }
+
+  html[data-primary="teal"] {
+    --primary-ck: oklch(0.55 0.105 195);
+    --primary-h: oklch(0.60 0.115 195);
+    --primary-soft: oklch(0.96 0.02 195);
+    --primary-ink: oklch(0.40 0.105 195);
+  }
+  html[data-primary="emerald"] {
+    --primary-ck: oklch(0.55 0.13 155);
+    --primary-h: oklch(0.60 0.14 155);
+    --primary-soft: oklch(0.96 0.025 155);
+    --primary-ink: oklch(0.40 0.13 155);
+  }
+  html[data-primary="slate"] {
+    --primary-ck: oklch(0.32 0.022 255);
+    --primary-h: oklch(0.40 0.022 255);
+    --primary-soft: oklch(0.94 0.008 255);
+    --primary-ink: oklch(0.25 0.022 255);
+  }
+  html[data-primary="crimson"] {
+    --primary-ck: oklch(0.55 0.17 22);
+    --primary-h: oklch(0.60 0.18 22);
+    --primary-soft: oklch(0.96 0.025 22);
+    --primary-ink: oklch(0.42 0.17 22);
+  }
+
+  /* Subtle hero backdrop grid */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, oklch(0.18 0.02 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.18 0.02 255 / 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .grid-fade {
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 75%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 75%);
+  }
+}
+
+/* ─────────── Reusable component classes (Claude Design) ─────────── */
+@layer components {
+  .ck-display {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .ck-mono {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    font-feature-settings: 'ss01';
+  }
+
+  .ck-btn {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all border border-transparent whitespace-nowrap;
+  }
+  .ck-btn-primary {
+    background: var(--primary-ck);
+    color: var(--primary-fg);
+    box-shadow: 0 1px 0 oklch(0.20 0.02 255 / 0.05), inset 0 1px 0 oklch(1 0 0 / 0.15);
+  }
+  .ck-btn-primary:hover { background: var(--primary-h); }
+
+  .ck-btn-ghost { color: var(--ink-2); background: transparent; }
+  .ck-btn-ghost:hover { background: var(--bg-inset); color: var(--ink); }
+
+  .ck-btn-outline {
+    border: 1px solid var(--border-soft);
+    background: var(--bg-elev);
+    color: var(--ink);
+  }
+  .ck-btn-outline:hover { border-color: var(--border-strong); background: var(--bg-muted); }
+
+  .ck-pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+    border: 1px solid var(--border-soft);
+    color: var(--ink-2);
+    background: var(--bg-elev);
+  }
+
+  .ck-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    box-shadow: 0 1px 0 oklch(0.92 0.005 250 / 1), 0 1px 2px oklch(0.18 0.02 255 / 0.04);
+  }
+
+  .ck-container { @apply max-w-[1280px] mx-auto px-8; }
 }
 
 * {

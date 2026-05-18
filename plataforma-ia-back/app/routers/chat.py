@@ -197,6 +197,11 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                     except Exception:
                         pass
 
+                # Extraer agent_id si viene del catálogo (Probar un agente).
+                agent_id = message_data.get("agent_id")
+                if agent_id and not isinstance(agent_id, str):
+                    agent_id = None
+
                 # Callback que reenvía eventos del agente al cliente en tiempo real
                 async def ws_event_callback(event: dict) -> None:
                     try:
@@ -211,6 +216,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                     conversation_id=conversation_id,
                     user_context=user_context,
                     event_callback=ws_event_callback,
+                    agent_id=agent_id,
                 )
 
                 # Persistir conversación nueva en Cosmos DB.
@@ -230,6 +236,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                             user_email=user_context.email if user_context else None,
                             division=user_context.division if user_context else None,
                             title=title,
+                            agent_id=agent_id,
                         )
                         # Upgrade del título con LLM summary — async background.
                         import asyncio as _asyncio

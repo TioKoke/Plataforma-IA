@@ -19,6 +19,26 @@ export default {
   				'verde-oscuro': '#106470',
   				azul: '#0072B1'
   			},
+  			// Claude Design tokens (oklch-based, via CSS vars)
+  			bg:           'var(--bg)',
+  			'bg-elev':    'var(--bg-elev)',
+  			'bg-muted':   'var(--bg-muted)',
+  			'bg-inset':   'var(--bg-inset)',
+  			'border-soft': 'var(--border-soft)',
+  			'border-strong': 'var(--border-strong)',
+  			ink:          'var(--ink)',
+  			'ink-2':      'var(--ink-2)',
+  			'ink-muted':  'var(--ink-muted)',
+  			'ink-muted-soft': 'var(--ink-muted-soft)',
+  			'ck-primary': {
+  				DEFAULT: 'var(--primary-ck)',
+  				hover:   'var(--primary-h)',
+  				soft:    'var(--primary-soft)',
+  				ink:     'var(--primary-ink)',
+  				fg:      'var(--primary-fg)',
+  			},
+  			success:      'var(--success-ck)',
+  			'success-soft': 'var(--success-soft)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -68,7 +88,13 @@ export default {
   			montserrat: [
   				'Montserrat',
   				'sans-serif'
-  			]
+  			],
+  			display: ['Montserrat', 'system-ui', 'sans-serif'],
+  			mono:    ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+  		},
+  		boxShadow: {
+  			ck:  '0 1px 0 oklch(0.92 0.005 250 / 1), 0 1px 2px oklch(0.18 0.02 255 / 0.04)',
+  			pop: '0 10px 30px -10px oklch(0.18 0.02 255 / 0.18), 0 4px 12px -4px oklch(0.18 0.02 255 / 0.08)',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

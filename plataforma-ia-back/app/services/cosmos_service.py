@@ -287,12 +287,14 @@ class CosmosService:
     def save_conversation(self, conversation_id: str, thread_id: str,
                           user_email: Optional[str] = None,
                           division: Optional[str] = None,
-                          title: Optional[str] = None) -> None:
+                          title: Optional[str] = None,
+                          agent_id: Optional[str] = None) -> None:
         """Guarda o actualiza la asociación conversation_id → thread_id.
 
-        Si se provee `title` (típicamente las primeras palabras del primer
-        mensaje del usuario), se almacena para mostrarlo en el sidebar de
-        historial — UX estilo Claude.ai.
+        - `title`: primeras palabras del primer mensaje del usuario (sidebar).
+        - `agent_id`: id del agente del catálogo si la conversación se inició
+          eligiendo un agente específico desde `/agentes`. Permite restaurar
+          la persona del agente en turnos posteriores.
         """
         try:
             doc = {
@@ -301,10 +303,14 @@ class CosmosService:
                 "user_email": user_email,
                 "division": division,
                 "title": title,
+                "agent_id": agent_id,
                 "created_at": datetime.utcnow().isoformat(),
             }
             self._persist(self._coll("conversations"), doc)
-            logger.info(f"Conversación guardada: {conversation_id} (división: {division})")
+            logger.info(
+                f"Conversación guardada: {conversation_id} "
+                f"(división: {division}, agent: {agent_id or 'general'})"
+            )
         except Exception as e:
             logger.error(f"Error al guardar conversación {conversation_id}: {e}")
             raise

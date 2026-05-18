@@ -57,6 +57,8 @@ export function useChat(apiUrl: string) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streamingState, setStreamingState] = useState<StreamingState>(null);
   const [conversationId, setConversationId] = useState<string | null>(null);
+  // ID del agente del catálogo activo (si la conversación se inició desde /agentes).
+  const [agentId, setAgentId] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [interactedComponents, setInteractedComponents] = useState<Set<string>>(new Set());
@@ -66,6 +68,7 @@ export function useChat(apiUrl: string) {
   const reconnectAttemptRef = useRef(0);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const conversationIdRef = useRef<string | null>(null);
+  const agentIdRef = useRef<string | null>(null);
   // Keep a ref to streamingState so onmessage closure always has current value
   const streamingStateRef = useRef<StreamingState>(null);
   // Prevents message_complete from creating a duplicate when stream_end already committed the message
@@ -75,6 +78,11 @@ export function useChat(apiUrl: string) {
   useEffect(() => {
     streamingStateRef.current = streamingState;
   }, [streamingState]);
+
+  // Keep agentId ref in sync
+  useEffect(() => {
+    agentIdRef.current = agentId;
+  }, [agentId]);
 
   // Keep conversationId ref in sync
   useEffect(() => {
@@ -384,6 +392,7 @@ export function useChat(apiUrl: string) {
           message: trimmed,
           conversation_id: conversationIdRef.current,
           user_context: userContext,
+          agent_id: agentIdRef.current,
         })
       );
     },
@@ -420,6 +429,7 @@ export function useChat(apiUrl: string) {
               message: lastUserMessage.content,
               conversation_id: conversationIdRef.current,
               user_context: userContext,
+              agent_id: agentIdRef.current,
             })
           );
         }, 0);
@@ -443,6 +453,8 @@ export function useChat(apiUrl: string) {
     setStreamingState,
     conversationId,
     setConversationId,
+    agentId,
+    setAgentId,
     isConnected,
     connectionError,
     sendMessage,

@@ -282,6 +282,7 @@ class AssistantService:
         conversation_id: Optional[str] = None,
         user_context=None,
         event_callback=None,
+        agent_id: Optional[str] = None,
     ) -> Tuple[str, str]:
         """
         Procesa un mensaje usando Chat Completions con historial en memoria.
@@ -303,6 +304,37 @@ class AssistantService:
         if user_context_str:
             logger.info(f"user_context: {user_context_str}")
 
+        # ── Agente del catálogo ──
+        # Si esta conversación se inició desde un agente del catálogo (o se
+        # provee agent_id en el turno actual), buscamos su metadata y
+        # componemos un system prompt especializado. Se prioriza el agent_id
+        # explícito del turno; si no, se hereda del conversation doc.
+        from app.services.cosmos_service import cosmos_service
+        effective_agent_id = agent_id
+        if not effective_agent_id:
+            try:
+                conv = cosmos_service.get_conversation(conversation_id)
+                if conv:
+                    effective_agent_id = conv.get("agent_id")
+            except Exception as _e:
+                logger.warning(f"Error leyendo agent_id de conversación: {_e}")
+
+        system_override: Optional[str] = None
+        if effective_agent_id:
+            try:
+                agent = cosmos_service.get_agent_by_id(effective_agent_id)
+                if agent:
+                    from app.services.azure_ai import build_agent_system_prompt
+                    system_override = build_agent_system_prompt(agent)
+                    logger.info(
+                        f"Modo agente activo: {agent.get('nombre')} "
+                        f"({effective_agent_id})"
+                    )
+                else:
+                    logger.warning(f"agent_id={effective_agent_id} no encontrado en catálogo")
+            except Exception as _e:
+                logger.warning(f"Error componiendo prompt de agente {effective_agent_id}: {_e}")
+
         # Inyectar recordatorio de archivos disponibles en mensajes de seguimiento
         file_reminder = self._build_file_context_reminder(conversation_id)
         enriched_message = message
@@ -321,6 +353,7 @@ class AssistantService:
             conversation_id=conversation_id,
             user_email=user_email,
             event_callback=event_callback,
+            system_instructions_override=system_override,
         )
 
         # Guardar en historial solo si la respuesta es válida

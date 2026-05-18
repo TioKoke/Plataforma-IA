@@ -1,281 +1,325 @@
-import { Link } from 'react-router-dom';
-import { Users, Bot, TrendingUp, Video, BookOpen, MessageSquare, Sparkles, Shield } from 'lucide-react';
-import TextType from '../components/reactbits/TextType';
-import SpotlightCard from '../components/reactbits/SpotlightCard';
-import CountUp from '../components/reactbits/CountUp';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import ResourcesGrid from '../components/ResourcesGrid';
-import { useStats } from '../hooks/useStats';
-import { useLiveMetrics } from '../hooks/useLiveMetrics';
-import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import {
+  Users, Bot, MessageSquare, Zap, ArrowRight, Sparkles, Video,
+} from 'lucide-react';
 
-const HomePage = () => {
-  const { userEmail } = useAuth();
-  const { stats: apiStats } = useStats(30);
-  const { metrics: liveMetrics, isLive } = useLiveMetrics(30_000, userEmail);
+export default function HomePage() {
+  const nav = useNavigate();
 
   const stats = [
-    {
-      icon: Users,
-      value: liveMetrics?.logged_in_users ?? 0,
-      label: 'Usuarios Activos',
-      sublabel: isLive ? 'Conectados ahora' : 'Últimos 30 días',
-      color: 'naranja',
-      gradient: 'from-plataforma-naranja to-orange-500',
-      spotlight: 'rgba(229, 83, 2, 0.15)',
-      showLive: isLive,
-    },
-    {
-      icon: Bot,
-      value: liveMetrics?.total_agents ?? apiStats?.kpis.total_agents ?? 0,
-      label: 'Agentes Disponibles',
-      sublabel: 'En todas las áreas',
-      color: 'turquesa',
-      gradient: 'from-plataforma-turquesa to-teal-500',
-      spotlight: 'rgba(0, 152, 170, 0.15)',
-      showLive: isLive,
-    },
-    {
-      icon: MessageSquare,
-      value: apiStats?.kpis.total_conversations_all ?? 0,
-      label: 'Interacciones Totales',
-      sublabel: 'Desde el lanzamiento',
-      color: 'azul',
-      gradient: 'from-plataforma-azul to-blue-600',
-      spotlight: 'rgba(0, 114, 177, 0.15)',
-      showLive: false,
-    }
+    { value: '1,284', label: 'Usuarios activos',     hint: 'Conectados esta semana', icon: Users },
+    { value: '17',    label: 'Agentes disponibles',  hint: 'En todas las áreas',     icon: Bot },
+    { value: '8,420', label: 'Interacciones',        hint: 'Desde el lanzamiento',   icon: MessageSquare },
+    { value: '98.6%', label: 'Uptime',               hint: 'Últimos 30 días',         icon: Zap },
   ];
 
-  const features = [
-    {
-      icon: Video,
-      title: 'Videos Educativos',
-      description: 'Aprende sobre IA en minería con contenido audiovisual de alta calidad diseñado para todos los niveles',
-      color: 'naranja',
-      link: '/aprende',
-      spotlight: 'rgba(229, 83, 2, 0.15)'
-    },
-    {
-      icon: Bot,
-      title: 'Catálogo de Agentes',
-      description: `Explora y prueba nuestros ${apiStats?.kpis.total_agents ?? ''} agentes especializados en procesos de Plataforma IA`,
-      color: 'turquesa',
-      link: '/agentes',
-      spotlight: 'rgba(0, 152, 170, 0.15)'
-    },
-    {
-      icon: MessageSquare,
-      title: 'Chat con IA',
-      description: 'Consulta en tiempo real sobre aplicaciones de IA en Plataforma IA con respuestas contextuales',
-      color: 'azul',
-      link: '/chat',
-      spotlight: 'rgba(0, 114, 177, 0.15)'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Dashboard de Métricas',
-      description: 'Visualiza el impacto y adopción de IA en todas las divisiones con datos en tiempo real',
-      color: 'rojo',
-      link: '/dashboard',
-      spotlight: 'rgba(193, 56, 50, 0.15)'
-    },
-    {
-      icon: BookOpen,
-      title: 'Mejores Prácticas',
-      description: 'Guías, templates y casos de éxito para implementar IA de forma efectiva en tu área',
-      color: 'verde-oscuro',
-      link: '/aprende',
-      spotlight: 'rgba(16, 100, 112, 0.15)'
-    },
-    {
-      icon: Shield,
-      title: 'IA Responsable',
-      description: 'Seguridad, privacidad y ética en el uso de inteligencia artificial en procesos críticos',
-      color: 'rojo-oscuro',
-      link: '/aprende',
-      spotlight: 'rgba(122, 37, 49, 0.15)'
-    }
+  const resources = [
+    { tag: 'Videos',   tone: 'primary' as const, icon: Video,         title: 'Centro de aprendizaje',     desc: 'Contenido audiovisual estructurado por nivel para que tu equipo se familiarice con IA aplicada al negocio.', cta: 'Ver videos',       to: '/aprende' },
+    { tag: 'Catálogo', tone: 'ink'     as const, icon: Bot,           title: 'Catálogo de agentes',       desc: 'Explora 17 agentes especializados en procesos críticos, prueba sus capacidades y solicita despliegues.',     cta: 'Explorar agentes', to: '/agentes' },
+    { tag: 'Chat',     tone: 'muted'   as const, icon: MessageSquare, title: 'Asistente conversacional',  desc: 'Consulta en lenguaje natural sobre procesos, sube documentos y recibe respuestas con contexto verificado.',  cta: 'Abrir chat',       to: '/chat' },
   ];
-
-  const getColorClasses = (color: string) => {
-    const colors: Record<string, { bg: string; text: string; border: string; from: string; to: string }> = {
-      naranja: { bg: 'bg-plataforma-naranja', text: 'text-plataforma-naranja', border: 'border-plataforma-naranja', from: 'from-plataforma-naranja', to: 'to-orange-500' },
-      turquesa: { bg: 'bg-plataforma-turquesa', text: 'text-plataforma-turquesa', border: 'border-plataforma-turquesa', from: 'from-plataforma-turquesa', to: 'to-teal-500' },
-      azul: { bg: 'bg-plataforma-azul', text: 'text-plataforma-azul', border: 'border-plataforma-azul', from: 'from-plataforma-azul', to: 'to-blue-600' },
-      rojo: { bg: 'bg-plataforma-rojo', text: 'text-plataforma-rojo', border: 'border-plataforma-rojo', from: 'from-plataforma-rojo', to: 'to-red-600' },
-      'verde-oscuro': { bg: 'bg-plataforma-verde-oscuro', text: 'text-plataforma-verde-oscuro', border: 'border-plataforma-verde-oscuro', from: 'from-plataforma-verde-oscuro', to: 'to-teal-700' },
-      'rojo-oscuro': { bg: 'bg-plataforma-rojo-oscuro', text: 'text-plataforma-rojo-oscuro', border: 'border-plataforma-rojo-oscuro', from: 'from-plataforma-rojo-oscuro', to: 'to-red-800' },
-      amarillo: { bg: 'bg-plataforma-amarillo', text: 'text-plataforma-amarillo', border: 'border-plataforma-amarillo', from: 'from-plataforma-amarillo', to: 'to-yellow-500' },
-      beige: { bg: 'bg-plataforma-beige', text: 'text-plataforma-beige', border: 'border-plataforma-beige', from: 'from-plataforma-beige', to: 'to-stone-300' }
-    };
-    return colors[color] || colors.naranja;
-  };
 
   return (
-    <div>
-      {/* Hero Section - Plataforma IA Style */}
-      <section className="relative h-[600px] md:h-[700px] flex items-center overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/Video.mp4" type="video/mp4" />
-          </video>
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
-        </div>
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-border-soft">
+        <div className="grid-bg grid-fade absolute inset-0 opacity-60" />
+        <div
+          className="absolute -top-52 -right-44 size-[540px] blur-3xl"
+          style={{ background: 'radial-gradient(circle, var(--primary-soft) 0%, transparent 65%)' }}
+        />
 
-        <div className="relative max-w-7xl mx-auto pl-8 md:pl-16 py-10 text-left z-10">
-          {/* Main Heading - Estilo Plataforma IA Original */}
-          <h1 className="font-montserrat font-bold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight text-white">
-            Queremos ser pilar del
-            <br />
-            desarrollo sustentable de
-            <br />
-            <span className="text-white">Chile con </span>
-            <span className="text-plataforma-naranja inline-block">
-              <TextType
-                texts={["IA", "Innovación", "Tecnología", "Eficiencia", "Seguridad"]}
-                typingSpeed={100}
-                deletingSpeed={60}
-                pauseDuration={2000}
-                showCursor={true}
-                cursorCharacter="_"
+        <div className="ck-container relative grid grid-cols-[1.1fr_1fr] gap-16 items-center py-20">
+          <div>
+            <span className="ck-pill mb-5">
+              <span
+                className="size-1.5 rounded-full"
+                style={{ background: 'var(--success-ck)', boxShadow: '0 0 0 3px var(--success-soft)' }}
               />
+              <span className="ck-mono text-[11px] tracking-wider text-ink-2">
+                PLATAFORMA ACTIVA · v2.4
+              </span>
             </span>
-          </h1>
 
+            <h1 className="ck-display text-[64px]">
+              Acelera tu organización<br />
+              con <span style={{ color: 'var(--primary-ck)' }}>agentes de IA</span> que entienden tu contexto.
+            </h1>
+
+            <p className="mt-5 text-[17px] text-ink-muted max-w-[540px] leading-relaxed">
+              Una plataforma unificada para acceder, entrenar y desplegar agentes especializados —
+              con observabilidad, control de costos y gobernanza desde el primer día.
+            </p>
+
+            <div className="flex gap-3 mt-8">
+              <button className="ck-btn ck-btn-primary" onClick={() => nav('/chat')}>
+                Abrir Chat IA <ArrowRight className="size-4" />
+              </button>
+              <button className="ck-btn ck-btn-outline" onClick={() => nav('/agentes')}>
+                Ver catálogo de agentes
+              </button>
+            </div>
+
+            <div className="flex gap-6 mt-9 pt-6 border-t border-border-soft">
+              {[
+                { k: 'SOC 2',    v: 'Type II' },
+                { k: 'Latencia', v: '<200ms' },
+                { k: 'Modelos',  v: '12 LLMs' },
+              ].map((it) => (
+                <div key={it.k}>
+                  <div className="ck-mono text-[11px] text-ink-muted tracking-wider">{it.k.toUpperCase()}</div>
+                  <div className="text-[15px] font-semibold text-ink mt-1">{it.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <HeroPreview />
         </div>
       </section>
 
-      {/* Unified Background Wrapper */}
-      <div className="relative flex flex-col w-full">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-transparent z-0 pointer-events-none"></div>
-        <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
-          <div className="absolute inset-0 gradient-mesh opacity-40"></div>
-          <div className="absolute inset-0 gradient-orange opacity-5"></div>
-          <div className="absolute top-[10%] right-0 w-[500px] h-[500px] bg-plataforma-amarillo/20 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-plataforma-naranja/20 rounded-full blur-[100px]"></div>
+      {/* STATS */}
+      <section className="py-12 border-b border-border-soft">
+        <div className="ck-container">
+          <div className="flex items-baseline justify-between mb-5">
+            <h2 className="ck-display text-[22px] m-0">Estado de la plataforma</h2>
+            <span className="ck-pill">
+              <span className="size-1.5 rounded-full" style={{ background: 'var(--success-ck)' }} />
+              <span className="text-ink-muted">Actualizado hace 2 min</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-4 gap-4">
+            {stats.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="ck-card p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <span
+                      className="size-9 rounded-[10px] grid place-items-center"
+                      style={{ background: 'var(--primary-soft)', color: 'var(--primary-ink)' }}
+                    >
+                      <Icon className="size-4" />
+                    </span>
+                    <span className="ck-mono text-[10px] text-ink-muted tracking-wider">EN VIVO</span>
+                  </div>
+                  <div className="ck-display text-[32px] leading-none">{s.value}</div>
+                  <div className="mt-1.5 text-[13.5px] font-medium text-ink-2">{s.label}</div>
+                  <div className="text-xs text-ink-muted">{s.hint}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
+      </section>
 
-        {/* Stats Section - Floating Cards */}
-        <section className="relative -mt-20 px-6 lg:px-8 pb-32 z-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <SpotlightCard
-                    key={index}
-                    spotlightColor={stat.spotlight}
-                    className="group glass-effect rounded-3xl hover-lift hover-glow overflow-hidden"
-                    style={{ animationDelay: `${index * 0.1}s`, border: 'none' }}
-                  >
-                    <div className="relative p-8 h-full w-full">
-                      {/* Background Gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
-
-                      <div className="relative z-10">
-                        {stat.showLive && (
-                          <span className="absolute top-0 right-0 flex items-center gap-1.5">
-                            <span className="relative flex h-2 w-2">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                            </span>
-                            <span className="text-xs text-gray-400 font-roboto">En vivo</span>
-                          </span>
-                        )}
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                          <Icon className="text-white" size={28} />
-                        </div>
-                        <h3 className="font-montserrat font-black text-5xl mb-3 text-gradient-orange flex items-center">
-                          <CountUp
-                            from={0}
-                            to={stat.value}
-                            separator=","
-                            direction="up"
-                            duration={3.5}
-                            className="count-up-text"
-                          />
-                        </h3>
-                        <p className="font-roboto font-semibold text-plataforma-gris-oscuro text-lg mb-2">
-                          {stat.label}
-                        </p>
-                        <Badge variant="secondary" className="font-roboto font-normal text-gray-600 bg-white/50 border border-gray-200 shadow-sm mt-1">
-                          {stat.sublabel}
-                        </Badge>
-                      </div>
-                    </div>
-                  </SpotlightCard>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Features Grid */}
-        <section className="py-32 px-6 lg:px-8 relative z-20">
-          <div className="relative max-w-7xl mx-auto">
-            {/* Heading - Now centered and on top */}
-            <div className="text-center mb-20">
-              <h2 className="font-montserrat font-black text-5xl md:text-6xl mb-6 text-plataforma-gris-oscuro tracking-tight">
-                <span>Nuestros recursos </span>
-                <span className="text-gray-400 font-medium">nunca se han </span>
-                <span className="text-gradient-orange">visto tan bien</span>
+      {/* RESOURCES */}
+      <section className="pt-20 pb-8">
+        <div className="ck-container">
+          <div className="grid grid-cols-[1fr_auto] items-end gap-6 mb-8">
+            <div>
+              <span className="ck-mono text-[11px] tracking-wider" style={{ color: 'var(--primary-ck)' }}>
+                03 RECURSOS
+              </span>
+              <h2 className="ck-display text-[40px] mt-2 max-w-[720px]">
+                Todo lo que necesitas, en un solo lugar.
               </h2>
-              <p className="font-roboto text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
-                Simplemente observa la inteligencia artificial en acción. Conoce a nuestro equipo de agentes y recursos.
+              <p className="mt-3 text-base text-ink-muted max-w-[560px]">
+                Aprende, prueba y conversa con la plataforma. Diseñada para que cualquier persona del equipo pueda incorporar IA a su trabajo diario.
               </p>
-
-              <Link to="/recursos" className="inline-flex items-center text-plataforma-naranja font-bold hover:text-orange-600 transition-colors group text-lg">
-                Explorar catálogo completo
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </Link>
             </div>
+            <button className="ck-btn ck-btn-outline" onClick={() => nav('/agentes')}>
+              Explorar catálogo completo <ArrowRight className="size-3.5" />
+            </button>
+          </div>
 
-            {/* Resources Grid - Full width */}
-            <ResourcesGrid
-              features={features}
-              getColorClasses={getColorClasses}
+          <div className="grid grid-cols-3 gap-5">
+            {resources.map((r) => (
+              <ResourceCard key={r.title} {...r} onClick={() => nav(r.to)} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="pt-16 pb-24">
+        <div className="ck-container">
+          <div className="ck-card relative overflow-hidden px-14 py-12 grid grid-cols-[1.4fr_1fr] gap-12 items-center">
+            <div
+              className="absolute inset-0 opacity-50 pointer-events-none"
+              style={{
+                background: 'radial-gradient(circle at 90% 50%, var(--primary-soft) 0%, transparent 50%)',
+              }}
             />
-          </div>
-        </section>
-
-        {/* CTA Section - Modern */}
-        <section className="py-32 px-6 lg:px-8 relative overflow-hidden z-20">
-          <div className="relative max-w-4xl mx-auto text-center z-10">
-            <div className="glass-effect rounded-3xl p-12 md:p-16 backdrop-blur-xl bg-white/40 border border-white/50 shadow-xl">
-              <Sparkles size={48} className="text-plataforma-naranja mx-auto mb-8 animate-pulse" />
-              <h2 className="font-montserrat font-black text-4xl md:text-5xl text-plataforma-gris-oscuro mb-6 tracking-tight">
-                ¿Tienes una idea innovadora?
-              </h2>
-              <p className="font-roboto text-xl text-gray-700 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
-                Valoramos las propuestas de todos los colaboradores de Plataforma IA.
-                Comparte tu visión y ayúdanos a construir el futuro de la minería.
+            <div className="relative">
+              <span
+                className="ck-pill mb-4 border-transparent"
+                style={{ background: 'var(--primary-soft)', color: 'var(--primary-ink)' }}
+              >
+                <Sparkles className="size-3" style={{ color: 'var(--primary-ck)' }} />
+                <span className="ck-mono text-[11px] tracking-wider">PROPUESTAS ABIERTAS</span>
+              </span>
+              <h2 className="ck-display text-[40px]">¿Tienes una idea para un nuevo agente?</h2>
+              <p className="mt-3.5 mb-6 text-base text-ink-muted max-w-[520px]">
+                Cualquier persona del equipo puede proponer un caso de uso. Lo revisamos en menos de 5 días hábiles y, si encaja, lo construimos contigo.
               </p>
-              <Button asChild className="h-auto group relative px-10 py-5 rounded-2xl font-roboto font-bold text-lg text-white overflow-hidden hover-lift shadow-lg shadow-orange-500/30 border-0 p-0">
-                <Link to="/chat" className="block w-full h-full p-5">
-                  <span className="absolute inset-0 gradient-orange z-0"></span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 z-0"></span>
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <MessageSquare size={20} />
-                    Ir al Chat IA
-                  </span>
-                </Link>
-              </Button>
+              <div className="flex gap-3">
+                <button className="ck-btn ck-btn-primary" onClick={() => nav('/chat')}>
+                  Proponer en Chat IA <ArrowRight className="size-4" />
+                </button>
+                <button className="ck-btn ck-btn-ghost" onClick={() => nav('/backlog')}>
+                  Ver propuestas anteriores
+                </button>
+              </div>
             </div>
+            <ProposalSnippet />
           </div>
-        </section>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ─────────────────── Subcomponents ─────────────────── */
+
+interface ResourceCardProps {
+  tag: string;
+  tone: 'primary' | 'ink' | 'muted';
+  icon: typeof Bot;
+  title: string;
+  desc: string;
+  cta: string;
+  onClick: () => void;
+}
+function ResourceCard({ tag, tone, icon: Icon, title, desc, cta, onClick }: ResourceCardProps) {
+  const toneStyle = {
+    primary: { background: 'var(--primary-ck)', color: 'var(--primary-fg)' },
+    ink:     { background: 'var(--ink)',         color: 'var(--bg-elev)' },
+    muted:   { background: 'var(--bg-inset)',    color: 'var(--ink)' },
+  }[tone];
+  return (
+    <div
+      onClick={onClick}
+      className="ck-card p-6 flex flex-col cursor-pointer min-h-[280px] transition-all hover:-translate-y-0.5 hover:shadow-pop"
+    >
+      <div className="flex justify-between items-start mb-6">
+        <span className="size-11 rounded-xl grid place-items-center" style={toneStyle}>
+          <Icon className="size-5" />
+        </span>
+        <span className="ck-pill ck-mono text-[10.5px] tracking-wider uppercase">{tag}</span>
+      </div>
+      <h3 className="ck-display text-[22px]">{title}</h3>
+      <p className="mt-2.5 text-sm text-ink-muted leading-relaxed flex-1">{desc}</p>
+      <div
+        className="mt-6 flex items-center gap-2 font-medium text-[13.5px]"
+        style={{ color: 'var(--primary-ck)' }}
+      >
+        {cta} <ArrowRight className="size-3.5" />
       </div>
     </div>
   );
-};
+}
 
-export default HomePage;
+function HeroPreview() {
+  return (
+    <div
+      className="relative bg-bg-elev border border-border-soft rounded-[18px] overflow-hidden"
+      style={{
+        boxShadow: '0 30px 60px -30px oklch(0.20 0.02 255 / 0.18), 0 8px 20px -8px oklch(0.20 0.02 255 / 0.08)',
+      }}
+    >
+      <div className="flex items-center gap-2 px-3.5 py-2.5 border-b border-border-soft bg-bg-muted">
+        <span className="size-2.5 rounded-full" style={{ background: 'oklch(0.86 0.008 250)' }} />
+        <span className="size-2.5 rounded-full" style={{ background: 'oklch(0.86 0.008 250)' }} />
+        <span className="size-2.5 rounded-full" style={{ background: 'oklch(0.86 0.008 250)' }} />
+        <span className="ck-mono ml-3 text-[11px] text-ink-muted">plataforma.ai / agents / forecast-q3</span>
+      </div>
+
+      <div className="p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="size-9 rounded-[10px] grid place-items-center bg-ink text-bg-elev">
+            <Bot className="size-4" />
+          </span>
+          <div className="flex-1">
+            <div className="text-[13.5px] font-semibold">Forecast Agent · Q3</div>
+            <div className="ck-mono text-[11px] text-ink-muted">Activo · 12 ejecuciones hoy</div>
+          </div>
+          <span className="ck-pill">
+            <span className="size-1.5 rounded-full" style={{ background: 'var(--success-ck)' }} />
+            <span className="text-[11px]">OK</span>
+          </span>
+        </div>
+
+        <Bubble side="user" text="¿Cuál es la proyección de ingresos para el próximo trimestre?" />
+        <Bubble side="ai" text="Basado en los datos de los últimos 18 meses y la temporalidad observada, proyecto $2.4M (±6%) para Q3. Los drivers principales son…" />
+
+        <div
+          className="mt-3.5 p-3 rounded-[10px] bg-bg-inset"
+          style={{ border: '1px dashed var(--border-strong)' }}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="ck-mono text-[10.5px] text-ink-muted tracking-wider">FUENTES</span>
+            <span className="ck-mono text-[10.5px] text-ink-muted">3 documentos</span>
+          </div>
+          <div className="flex gap-1.5 flex-wrap">
+            {['Ventas Q1.xlsx', 'Forecast Model v3', 'Mercado · Informe'].map((s) => (
+              <span
+                key={s}
+                className="text-[11px] px-2 py-0.5 rounded-md bg-bg-elev border border-border-soft ck-mono text-ink-2"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Bubble({ side, text }: { side: 'user' | 'ai'; text: string }) {
+  const isUser = side === 'user';
+  return (
+    <div className={`flex mb-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
+      <div
+        className={`max-w-[85%] px-3 py-2.5 rounded-xl text-[13px] leading-snug ${
+          isUser ? 'text-[var(--primary-fg)]' : 'bg-bg-muted text-ink border border-border-soft'
+        }`}
+        style={isUser ? { background: 'var(--primary-ck)' } : undefined}
+      >
+        {text}
+      </div>
+    </div>
+  );
+}
+
+function ProposalSnippet() {
+  return (
+    <div className="relative bg-bg-elev border border-border-soft rounded-[14px] overflow-hidden shadow-ck">
+      <div className="px-3.5 py-2.5 border-b border-border-soft flex items-center justify-between bg-bg-muted">
+        <span className="ck-mono text-[11px] text-ink-muted tracking-wider">PROP-2031</span>
+        <span
+          className="ck-pill border-transparent"
+          style={{ background: 'var(--success-soft)', color: 'oklch(0.40 0.14 155)' }}
+        >
+          <span className="size-1.5 rounded-full" style={{ background: 'var(--success-ck)' }} />
+          En revisión
+        </span>
+      </div>
+      <div className="px-4 py-4">
+        <div className="text-sm font-semibold text-ink">Asistente de onboarding RRHH</div>
+        <div className="text-[12.5px] text-ink-muted mt-1 leading-relaxed">
+          Automatizar el primer día de cada empleado nuevo con un agente que responde dudas y guía documentación.
+        </div>
+        <div className="mt-3.5 pt-3.5 border-t border-border-soft flex justify-between items-center text-xs text-ink-muted">
+          <div className="flex items-center gap-1.5">
+            <span className="size-5 rounded-full bg-bg-inset grid place-items-center text-ink-2 text-[10px] font-semibold">
+              MR
+            </span>
+            <span>María R. · RRHH</span>
+          </div>
+          <span className="ck-mono">2 días</span>
+        </div>
+      </div>
+    </div>
+  );
+}
