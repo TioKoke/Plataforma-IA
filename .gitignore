@@ -104,3 +104,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 CLAUDE.md
+# Design system handoff source (no es código de la app)
+PlataformaIAIBM/
