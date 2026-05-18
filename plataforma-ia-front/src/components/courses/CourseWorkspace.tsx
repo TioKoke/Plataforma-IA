@@ -423,21 +423,27 @@ const CourseWorkspaceContent = () => {
     if (!guided) return <CourseSelectScreen onSelectLesson={handleSelectLesson} progress={progress} />;
 
     /* ════════════════════════════════════════════════════════════════════
-       RENDER
+       RENDER — workspace mode (fija altura para ajustarse a la pantalla)
     ════════════════════════════════════════════════════════════════════ */
     return (
-        <div className="flex flex-col h-full w-full bg-transparent text-slate-700 font-sans overflow-hidden">
+        <div
+            className="flex flex-col w-full bg-bg-elev text-ink rounded-[14px] border border-border-soft overflow-hidden shadow-sm"
+            style={{ height: 'calc(100vh - 180px)', minHeight: 580 }}
+        >
 
             {/* ── Top header ── */}
-            <div className="h-14 bg-white/40 backdrop-blur-md border-b border-white/50 flex items-center justify-between px-4 shrink-0 shadow-sm">
+            <div className="h-14 bg-bg-elev border-b border-border-soft flex items-center justify-between px-4 shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-plataforma-turquesa/10 text-plataforma-turquesa flex items-center justify-center shrink-0">
-                        <Icons.Workflow size={18} />
+                    <div
+                        className="size-8 rounded-lg grid place-items-center shrink-0"
+                        style={{ background: 'var(--primary-soft)', color: 'var(--primary-ink)' }}
+                    >
+                        <Icons.Workflow size={17} />
                     </div>
                     <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-slate-900 font-bold text-base">AgentFlow</span>
-                        <span className="text-slate-300 hidden sm:block">·</span>
-                        <span className="text-slate-500 text-sm truncate hidden sm:block">
+                        <span className="text-ink font-semibold text-[14px]">AgentFlow</span>
+                        <span className="text-border-soft hidden sm:block">·</span>
+                        <span className="text-ink-muted text-[13px] truncate hidden sm:block">
                             {guided.course.title} → {guided.lesson.title}
                         </span>
                     </div>
@@ -446,23 +452,32 @@ const CourseWorkspaceContent = () => {
                 <div className="flex items-center gap-2 shrink-0">
                     {/* Step progress */}
                     <div className="hidden md:flex items-center gap-2">
-                        <span className="text-xs text-slate-400">
+                        <span className="text-[11.5px] text-ink-muted">
                             Paso {Math.min(currentStepNum, totalSteps)}/{totalSteps}
                         </span>
-                        <div className="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div className="w-24 h-1.5 bg-bg-inset rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-plataforma-turquesa rounded-full transition-all duration-500"
-                                style={{ width: `${progressPct}%` }}
+                                className="h-full rounded-full transition-all duration-500"
+                                style={{ width: `${progressPct}%`, background: 'var(--primary-ck)' }}
                             />
                         </div>
-                        <span className="text-xs font-medium text-plataforma-turquesa w-8 text-right">{progressPct}%</span>
+                        <span
+                            className="ck-mono text-[11px] w-8 text-right"
+                            style={{ color: 'var(--primary-ck)' }}
+                        >
+                            {progressPct}%
+                        </span>
                     </div>
 
                     {/* Log toggle */}
                     {hasRun && (
                         <button
                             onClick={() => setShowLog(v => !v)}
-                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors ${showLog ? 'bg-slate-800 text-slate-100' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200'}`}
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] transition-colors ${
+                                showLog
+                                    ? 'bg-ink text-bg-elev'
+                                    : 'text-ink-muted hover:text-ink-2 hover:bg-bg-inset border border-border-soft'
+                            }`}
                             title={showLog ? 'Ocultar log' : 'Ver log de ejecución'}
                         >
                             <Icons.Terminal size={13} />
@@ -474,7 +489,7 @@ const CourseWorkspaceContent = () => {
                     {hasRun && !isExecuting && (
                         <button
                             onClick={clearExecution}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors border border-slate-200"
+                            className="p-1.5 rounded-lg text-ink-muted hover:text-ink hover:bg-bg-inset transition-colors border border-border-soft"
                             title="Limpiar estados de ejecución"
                         >
                             <Icons.RotateCcw size={14} />
@@ -484,7 +499,7 @@ const CourseWorkspaceContent = () => {
                     {/* Back */}
                     <button
                         onClick={handleExit}
-                        className="flex items-center gap-1.5 text-slate-500 hover:text-slate-800 text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-slate-100 border border-slate-200"
+                        className="flex items-center gap-1.5 text-ink-muted hover:text-ink text-[12.5px] transition-colors px-3 py-1.5 rounded-lg hover:bg-bg-inset border border-border-soft"
                     >
                         <Icons.ChevronLeft size={14} />
                         <span className="hidden sm:block">Cursos</span>
@@ -552,15 +567,26 @@ const CourseWorkspaceContent = () => {
 
                         {/* Empty canvas hint */}
                         {nodes.length === 0 && (
-                            <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 bg-white/90 backdrop-blur border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-sm shadow-md pointer-events-none">
-                                <Icons.MousePointerClick size={16} className="text-plataforma-turquesa shrink-0" />
+                            <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 bg-bg-elev border border-border-soft text-ink-2 px-5 py-2.5 rounded-xl text-sm shadow-sm pointer-events-none">
+                                <Icons.MousePointerClick
+                                    size={16}
+                                    className="shrink-0"
+                                    style={{ color: 'var(--primary-ck)' }}
+                                />
                                 Arrastra los nodos del panel izquierdo hacia aquí
                             </div>
                         )}
 
                         {/* Ready to chat hint */}
                         {canExecute && !hasRun && !isExecuting && (
-                            <div className="absolute top-4 right-4 flex items-center gap-2 bg-plataforma-turquesa/10 border border-plataforma-turquesa/30 text-plataforma-turquesa px-3 py-1.5 rounded-lg text-xs pointer-events-none">
+                            <div
+                                className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs pointer-events-none"
+                                style={{
+                                    background: 'var(--primary-soft)',
+                                    color: 'var(--primary-ink)',
+                                    border: '1px solid var(--primary-ck)',
+                                }}
+                            >
                                 <Icons.MessageCircle size={13} />
                                 Escribe en el Chat de prueba →
                             </div>
@@ -568,8 +594,8 @@ const CourseWorkspaceContent = () => {
 
                         {/* Delete hint */}
                         {nodes.length > 0 && (
-                            <div className="absolute bottom-4 right-4 text-[11px] text-slate-400 bg-white/80 border border-slate-200 rounded-lg px-3 py-1.5 pointer-events-none">
-                                <kbd className="font-mono">Delete</kbd> para eliminar nodo seleccionado
+                            <div className="absolute bottom-4 right-4 text-[11px] text-ink-muted-soft bg-bg-elev border border-border-soft rounded-lg px-3 py-1.5 pointer-events-none">
+                                <kbd className="ck-mono">Delete</kbd> para eliminar nodo seleccionado
                             </div>
                         )}
                     </div>

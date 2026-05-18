@@ -76,14 +76,9 @@ export default function LearnPage() {
       </section>
 
       {tab === 'cursos' ? (
-        <section className="pt-6 pb-10">
+        <section className="pt-6 pb-12">
           <div className="ck-container">
-            <div
-              className="ck-card overflow-hidden bg-bg-elev"
-              style={{ height: 'calc(100vh - 360px)', minHeight: 560 }}
-            >
-              <CourseWorkspace />
-            </div>
+            <CourseWorkspace />
           </div>
         </section>
       ) : (
