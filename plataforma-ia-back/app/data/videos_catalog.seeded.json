@@ -1,0 +1,382 @@
+[
+  {
+    "id": "vid_what-is-artificial-intelligence-2epf9r",
+    "title": "What is Artificial Intelligence?",
+    "duration": "5 min",
+    "level": "Básico",
+    "category": "Fundamentos",
+    "youtube_id": "2ePf9rue1Ao",
+    "description": "IBM Technology explica de forma clara y concisa qué es la Inteligencia Artificial y cómo funciona.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_machine-learning-explained-in-5-minutes-9ggntq",
+    "title": "Machine Learning Explained in 5 Minutes",
+    "duration": "5 min",
+    "level": "Básico",
+    "category": "Conceptos",
+    "youtube_id": "9gGnTQTYNaE",
+    "description": "Una introducción rápida y clara sobre Machine Learning y sus aplicaciones prácticas.",
+    "company": "IBM Cloud"
+  },
+  {
+    "id": "vid_what-is-cloud-computing-rwgw-c",
+    "title": "What is Cloud Computing?",
+    "duration": "6 min",
+    "level": "Básico",
+    "category": "Tecnología",
+    "youtube_id": "RWgW-CgdIk0",
+    "description": "IBM Technology explica de forma clara qué es Cloud Computing y sus beneficios.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-deep-learning-6m5vxk",
+    "title": "What is Deep Learning?",
+    "duration": "6 min",
+    "level": "Intermedio",
+    "category": "Técnicas",
+    "youtube_id": "6M5VXKLf4D4",
+    "description": "Explicación clara del Deep Learning y cómo las redes neuronales aprenden patrones complejos.",
+    "company": "MIT"
+  },
+  {
+    "id": "vid_what-is-kubernetes-asrqrs",
+    "title": "What is Kubernetes?",
+    "duration": "6 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "aSrqRSk43lY",
+    "description": "IBM Technology explica Kubernetes y la orquestación de contenedores.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-computer-vision--4e2-0",
+    "title": "What is Computer Vision?",
+    "duration": "7 min",
+    "level": "Intermedio",
+    "category": "Técnicas",
+    "youtube_id": "-4E2-0sxVUM",
+    "description": "IBM explica cómo las computadoras pueden ver y entender imágenes usando IA.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_natural-language-processing-nlp-flvj8v",
+    "title": "Natural Language Processing (NLP)",
+    "duration": "9 min",
+    "level": "Intermedio",
+    "category": "Conceptos",
+    "youtube_id": "fLvJ8VdHLA0",
+    "description": "Introducción al procesamiento de lenguaje natural y cómo las máquinas entienden el texto.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_ai-vs-machine-learning-vs-deep-learning-1vkb7b",
+    "title": "AI vs Machine Learning vs Deep Learning",
+    "duration": "10 min",
+    "level": "Básico",
+    "category": "Fundamentos",
+    "youtube_id": "1vkb7BCMQd0",
+    "description": "Explicación de las diferencias entre AI, Machine Learning y Deep Learning.",
+    "company": "IBM Cloud"
+  },
+  {
+    "id": "vid_what-is-big-data-bayrob",
+    "title": "What is Big Data?",
+    "duration": "5 min",
+    "level": "Básico",
+    "category": "Datos",
+    "youtube_id": "bAyrObl7TYE",
+    "description": "IBM explica qué es Big Data y por qué es fundamental para la IA moderna.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-a-rest-api-lsmqra",
+    "title": "What is a REST API?",
+    "duration": "8 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "lsMQRaeKNDk",
+    "description": "IBM Technology explica qué son las APIs REST y cómo funcionan.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-neural-network-aircar",
+    "title": "What is Neural Network?",
+    "duration": "7 min",
+    "level": "Intermedio",
+    "category": "Técnicas",
+    "youtube_id": "aircAruvnKk",
+    "description": "Explicación visual de cómo funcionan las redes neuronales artificiales.",
+    "company": "3Blue1Brown"
+  },
+  {
+    "id": "vid_what-is-devops-ubtb4s",
+    "title": "What is DevOps?",
+    "duration": "9 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "UbtB4sMaaNM",
+    "description": "IBM Technology explica DevOps y cómo transforma el desarrollo de software.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-data-science-x3paom",
+    "title": "What is Data Science?",
+    "duration": "6 min",
+    "level": "Básico",
+    "category": "Fundamentos",
+    "youtube_id": "X3paOmcrTjQ",
+    "description": "IBM explica qué es Data Science y cómo se relaciona con la IA.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-docker-rotqpr",
+    "title": "What is Docker?",
+    "duration": "7 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "rOTqprHv1YE",
+    "description": "IBM Technology explica Docker y la tecnología de contenedores.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-iot-internet-of-things-llhmzv",
+    "title": "What is IoT (Internet of Things)?",
+    "duration": "5 min",
+    "level": "Básico",
+    "category": "Tecnología",
+    "youtube_id": "LlhmzVL5bm8",
+    "description": "IBM explica el Internet de las Cosas y su conexión con la IA.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_blockchain-explained-qovabk",
+    "title": "Blockchain Explained",
+    "duration": "6 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "qOVAbKKSH10",
+    "description": "Introducción a blockchain y su potencial combinado con IA.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-cybersecurity-inwwhr",
+    "title": "What is Cybersecurity?",
+    "duration": "7 min",
+    "level": "Básico",
+    "category": "Seguridad",
+    "youtube_id": "inWWhr5tnEA",
+    "description": "IBM Technology explica ciberseguridad y por qué es crucial para las empresas.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_quantum-computing-explained-jhhmjc",
+    "title": "Quantum Computing Explained",
+    "duration": "9 min",
+    "level": "Avanzado",
+    "category": "Tecnología",
+    "youtube_id": "JhHMJCUmq28",
+    "description": "IBM explica la computación cuántica y su futuro con la IA.",
+    "company": "IBM Research"
+  },
+  {
+    "id": "vid_what-is-data-analytics-yzvfh7",
+    "title": "What is Data Analytics?",
+    "duration": "6 min",
+    "level": "Básico",
+    "category": "Datos",
+    "youtube_id": "yZvFH7B6gKI",
+    "description": "IBM Technology explica el análisis de datos y su importancia para las empresas.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-edge-computing-ceouei",
+    "title": "What is Edge Computing?",
+    "duration": "5 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "cEOUeItHDdo",
+    "description": "IBM Technology explica edge computing y su rol en IoT y aplicaciones industriales.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-robotics-jqj_v7",
+    "title": "What is Robotics?",
+    "duration": "8 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "jQj_v7gITRs",
+    "description": "Introducción a la robótica y cómo la IA está revolucionando este campo.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-5g-gex_d0",
+    "title": "What is 5G?",
+    "duration": "6 min",
+    "level": "Básico",
+    "category": "Tecnología",
+    "youtube_id": "GEx_d0SjvS0",
+    "description": "IBM Technology explica la tecnología 5G y su impacto en la industria.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-augmented-reality-ar-wxzcd0",
+    "title": "What is Augmented Reality (AR)?",
+    "duration": "7 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "WxzcD04rwc8",
+    "description": "IBM Technology explica realidad aumentada y sus aplicaciones industriales.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-virtual-reality-vr-gqhe0m",
+    "title": "What is Virtual Reality (VR)?",
+    "duration": "5 min",
+    "level": "Intermedio",
+    "category": "Tecnología",
+    "youtube_id": "gqhE0m0bMho",
+    "description": "Introducción a realidad virtual y su uso en entrenamiento industrial.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-automation-zeeuhg",
+    "title": "What is Automation?",
+    "duration": "6 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "zEEuHgTTZNI",
+    "description": "IBM Technology explica la automatización y cómo está transformando las industrias.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-are-digital-twins-tmehzf",
+    "title": "What are Digital Twins?",
+    "duration": "7 min",
+    "level": "Avanzado",
+    "category": "Aplicaciones",
+    "youtube_id": "TMeHzfH2M5E",
+    "description": "IBM explica los gemelos digitales y su aplicación en manufactura e industria.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_what-is-predictive-maintenance-0cjylc",
+    "title": "What is Predictive Maintenance?",
+    "duration": "6 min",
+    "level": "Intermedio",
+    "category": "Aplicaciones",
+    "youtube_id": "0CJYLC9k4jY",
+    "description": "Explicación de mantenimiento predictivo usando IA para prevenir fallas de equipos.",
+    "company": "IBM Technology"
+  },
+  {
+    "id": "vid_inteligencia-artificial-en-word-copilot--n-_puc",
+    "title": "Inteligencia Artificial en WORD — Copilot para Microsoft 365",
+    "duration": "20 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "n-_PuCw2yeE",
+    "description": "Cómo usar Copilot dentro de Word para redactar, resumir y mejorar documentos profesionales.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_inteligencia-artificial-en-excel-copilot-0znbh8",
+    "title": "Inteligencia Artificial en EXCEL — Copilot para Microsoft 365",
+    "duration": "21 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "0ZnBh8XV5XE",
+    "description": "Copilot aplicado a hojas de cálculo: análisis de datos, fórmulas automáticas y resúmenes inteligentes.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_inteligencia-artificial-en-outlook-copil-t17syl",
+    "title": "Inteligencia Artificial en OUTLOOK — Copilot para Microsoft 365",
+    "duration": "23 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "t17SylWehkI",
+    "description": "Gestión de correo con IA: resumen de hilos, redacción asistida y priorización automática.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_inteligencia-artificial-en-teams-copilot-urdxuo",
+    "title": "Inteligencia Artificial en TEAMS — Copilot para Microsoft 365",
+    "duration": "15 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "urdxuOb1J5U",
+    "description": "Transcripciones automáticas, resúmenes de reuniones y puntos de acción generados por IA en Teams.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_inteligencia-artificial-en-sharepoint-co-uice_p",
+    "title": "Inteligencia Artificial en SHAREPOINT — Copilot para Microsoft 365",
+    "duration": "22 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "UICe_P_VSrg",
+    "description": "Búsqueda inteligente y resumen de documentos corporativos directamente en SharePoint con Copilot.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_la-ia-en-word-excel-y-powerpoint-como-fu-voef-o",
+    "title": "La IA en Word, Excel y PowerPoint — Cómo Funciona Copilot M365",
+    "duration": "8 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "voEF-OAwoec",
+    "description": "Visión general de las tres herramientas más usadas en la empresa con Copilot activo. Muy bueno para onboarding.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_trucos-de-copilot-para-mejorar-tu-produc-bcy_cg",
+    "title": "Trucos de Copilot para Mejorar tu Productividad — IA en M365",
+    "duration": "28 min",
+    "level": "Básico",
+    "category": "Aplicaciones",
+    "youtube_id": "bcy_CgKFHM0",
+    "description": "Tips concretos y aplicables de inmediato. Formato rápido, sin rodeos.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_con-copilot-planifica-tu-dia-como-un-ceo-hxsmfn",
+    "title": "Con Copilot Planifica tu Día como un CEO — Outlook, Teams, Loop",
+    "duration": "22 min",
+    "level": "Intermedio",
+    "category": "Aplicaciones",
+    "youtube_id": "HxsmfNiui6Y",
+    "description": "Cómo organizar agenda, tareas y reuniones usando IA en el ecosistema Microsoft 365.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_equipos-mas-productivos-con-copilot-ia-e-cuazbj",
+    "title": "Equipos más Productivos con Copilot — IA en Microsoft 365",
+    "duration": "30 min",
+    "level": "Intermedio",
+    "category": "Aplicaciones",
+    "youtube_id": "cuAzbjbkbYc",
+    "description": "Estrategias para que líderes de equipo saquen el máximo provecho de Copilot en el trabajo colaborativo.",
+    "company": "Miquel Nadal Vela"
+  },
+  {
+    "id": "vid_como-crear-flujos-con-copilot-en-power-a-xggkaq",
+    "title": "¿Cómo Crear Flujos con Copilot en Power Automate? — Automatización con IA",
+    "duration": "4 min",
+    "level": "Intermedio",
+    "category": "Aplicaciones",
+    "youtube_id": "xgGkAQ8N1JM",
+    "description": "Cómo usar Copilot para crear flujos automáticos en Power Automate sin necesidad de programar.",
+    "company": "Power Platform España"
+  },
+  {
+    "id": "vid_automatiza-procesos-sin-programar-con-co-jmjtzu",
+    "title": "Automatiza Procesos sin Programar con Copilot y Power Automate",
+    "duration": "15 min",
+    "level": "Intermedio",
+    "category": "Aplicaciones",
+    "youtube_id": "JMJTZUpSXvE",
+    "description": "Automatización de tareas repetitivas corporativas usando Copilot como asistente. Sin código.",
+    "company": "Power Platform España"
+  }
+]

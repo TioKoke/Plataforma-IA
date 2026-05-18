@@ -1,0 +1,62 @@
+# Framework
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# Anthropic SDK (Claude API nativo — prompt caching, extended thinking, etc.)
+anthropic>=0.40.0
+# OpenAI SDK queda para back-compat con endpoints OpenAI-compatibles si se
+# quiere swappear el provider sin código. Hoy no es la ruta primaria.
+openai
+
+# WebSocket support
+websockets
+python-multipart
+
+# Utilities
+pydantic
+pydantic-settings
+
+# Excel / tabular data
+openpyxl
+pandas
+xlsxwriter>=3.2.0
+# Motor moderno de lectura/análisis (Polars + DuckDB + Calamine)
+polars>=1.0.0
+duckdb>=1.1.0
+fastexcel>=0.12
+pyarrow>=18.0.0
+# Hardening XML (anti-XXE)
+defusedxml>=0.7.1
+
+# Base de datos — MongoDB (Atlas M0 en el demo)
+pymongo
+
+# Storage de archivos — Google Cloud Storage (directo, sin Firebase layer)
+google-cloud-storage
+
+# JWT validation (Azure AD — solo modo no-demo)
+python-jose[cryptography]
+httpx
+
+# Rate limiting (M-1 pentest) — middleware in-memory custom, sin deps
+# (slowapi descartado: SlowAPIMiddleware no aplica default_limits a rutas
+# sin decorador, y decorar todos los endpoints era invasivo).
+
+# OAuth integrations (Outlook via MSAL, token encryption)
+msal
+cryptography
+
+# File processing
+pymupdf>=1.24.0
+pymupdf4llm>=0.0.17
+python-docx
+Pillow
+python-magic-bin; sys_platform == 'win32'
+python-magic; sys_platform != 'win32'
+
+# PDF generation (HTML+CSS -> PDF con branding Plataforma IA)
+# En Windows requiere GTK+ runtime (ver QUICK_START.md).
+# En Azure Linux base image ya incluye libpango/cairo.
+weasyprint>=62.0
+jinja2>=3.1.0

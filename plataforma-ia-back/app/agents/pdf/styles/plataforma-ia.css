@@ -1,0 +1,200 @@
+/* Paleta y layout corporativo Plataforma IA para PDFs generados por el agente. */
+
+@page {
+  size: A4;
+  margin: 2.2cm 1.8cm 2.4cm 1.8cm;
+  @top-left {
+    content: "Plataforma IA";
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 9pt;
+    color: #003C71;
+  }
+  @top-right {
+    content: string(doc-title);
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 9pt;
+    color: #6B6B6B;
+  }
+  @bottom-left {
+    content: string(doc-date);
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 8pt;
+    color: #6B6B6B;
+  }
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 8pt;
+    color: #6B6B6B;
+  }
+}
+
+@page :first {
+  margin: 0;
+  @top-left { content: ""; }
+  @top-right { content: ""; }
+  @bottom-left { content: ""; }
+  @bottom-right { content: ""; }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica", "Arial", sans-serif;
+  color: #1E1E1E;
+  font-size: 10.5pt;
+  line-height: 1.45;
+}
+
+.cover {
+  page: cover;
+  height: 100vh;
+  background: linear-gradient(135deg, #003C71 0%, #0072B1 60%, #E87722 100%);
+  color: #FFFFFF;
+  padding: 3cm 2.2cm;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  page-break-after: always;
+}
+
+.cover .brand {
+  font-size: 11pt;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.cover h1 {
+  font-size: 30pt;
+  line-height: 1.1;
+  margin: 0 0 0.3em 0;
+  string-set: doc-title content();
+}
+
+.cover .subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  opacity: 0.92;
+  max-width: 80%;
+}
+
+.cover .meta {
+  font-size: 10pt;
+  opacity: 0.9;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  padding-top: 1em;
+}
+
+.cover .meta div { margin-bottom: 0.25em; }
+.cover .meta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 8pt;
+  opacity: 0.75;
+}
+
+.doc-date-anchor { string-set: doc-date content(); display: none; }
+
+.content {
+  padding: 0;
+}
+
+h1, h2, h3 { color: #003C71; }
+
+h2 {
+  font-size: 16pt;
+  border-bottom: 2px solid #E87722;
+  padding-bottom: 0.15em;
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 12pt;
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  page-break-after: avoid;
+}
+
+p { margin: 0.4em 0 0.7em 0; text-align: justify; }
+
+ul { margin: 0.3em 0 0.8em 1em; padding-left: 0.4em; }
+ul li { margin-bottom: 0.25em; }
+ul li::marker { color: #E87722; }
+
+.kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4cm;
+  margin: 0.6em 0 1em 0;
+}
+
+.kpi {
+  flex: 1 1 4.5cm;
+  min-width: 4.2cm;
+  border-left: 4px solid #E87722;
+  background: #F7F7F9;
+  padding: 0.4em 0.6em;
+  border-radius: 2px;
+  page-break-inside: avoid;
+}
+
+.kpi .kpi-label {
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6B6B6B;
+  margin-bottom: 0.15em;
+}
+
+.kpi .kpi-value {
+  font-size: 18pt;
+  font-weight: 700;
+  color: #003C71;
+  line-height: 1.1;
+}
+
+.kpi .kpi-caption { font-size: 9pt; color: #6B6B6B; margin-top: 0.1em; }
+
+.kpi.trend-up .kpi-value::after { content: " ▲"; color: #1B9E4B; font-size: 12pt; }
+.kpi.trend-down .kpi-value::after { content: " ▼"; color: #C0392B; font-size: 12pt; }
+.kpi.trend-flat .kpi-value::after { content: " ●"; color: #6B6B6B; font-size: 12pt; }
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5em 0 0.9em 0;
+  font-size: 9.5pt;
+  page-break-inside: auto;
+}
+
+table.data caption {
+  caption-side: top;
+  text-align: left;
+  font-style: italic;
+  color: #6B6B6B;
+  margin-bottom: 0.3em;
+}
+
+table.data thead { display: table-header-group; }
+
+table.data th {
+  background: #003C71;
+  color: #FFFFFF;
+  text-align: left;
+  padding: 0.4em 0.6em;
+  font-weight: 600;
+}
+
+table.data td {
+  padding: 0.35em 0.6em;
+  border-bottom: 1px solid #E3E6EA;
+}
+
+table.data tbody tr:nth-child(even) td { background: #F5F7FA; }
+
+.section { page-break-inside: auto; }
+.page-break { page-break-before: always; }

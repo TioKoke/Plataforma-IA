@@ -1,0 +1,313 @@
+/* Fuentes auto-hospedadas — evita dependencia de Google CDN (bloqueado en red corporativa) */
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+@import '@fontsource/roboto/900.css';
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/500.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/800.css';
+@import '@fontsource/montserrat/900.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Roboto', sans-serif;
+    @apply text-gray-900 bg-gradient-to-br from-gray-50 via-white to-gray-50;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.02em;
+  }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+/* Estilos personalizados Plataforma IA */
+:root {
+  --plataforma-naranja: #E55302;
+  --plataforma-amarillo: #F4AA00;
+  --plataforma-turquesa: #0098AA;
+  --plataforma-rojo: #C13832;
+  --plataforma-rojo-oscuro: #7A2531;
+  --plataforma-gris-oscuro: #36424A;
+  --plataforma-beige: #C4C1A0;
+  --plataforma-verde-oscuro: #106470;
+  --plataforma-azul: #0072B1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Modern Glassmorphism Effect */
+@layer utilities {
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .gradient-orange {
+    background: linear-gradient(135deg, #E55302 0%, #F4AA00 100%);
+  }
+
+  .gradient-mesh {
+    background:
+      radial-gradient(at 20% 30%, rgba(229, 83, 2, 0.1) 0px, transparent 50%),
+      radial-gradient(at 80% 70%, rgba(0, 152, 170, 0.1) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(244, 170, 0, 0.05) 0px, transparent 50%);
+  }
+
+  .hover-lift {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .hover-glow {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 20px 60px -10px rgba(229, 83, 2, 0.4);
+  }
+
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #E55302 0%, #F4AA00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out;
+  }
+
+  .animate-fadeIn {
+    animation: fadeInUp 0.5s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #E55302 0%, #F4AA00 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #d14902 0%, #e09900 100%);
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(229, 83, 2, 0.2);
+  color: #36424A;
+}
+
+::-moz-selection {
+  background: rgba(229, 83, 2, 0.2);
+  color: #36424A;
+}
+
+/* Estilos mejorados para bloques de código */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0;
+  background: transparent;
+}
+
+/* Mejorar contraste de syntax highlighting */
+.hljs {
+  color: #e6e6e6 !important;
+  background: transparent !important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: #f59e0b !important;
+  opacity: 1 !important;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute {
+  color: #34d399 !important;
+  opacity: 1 !important;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-meta {
+  color: #60a5fa !important;
+  opacity: 1 !important;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #a78bfa !important;
+  opacity: 1 !important;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #fbbf24 !important;
+  opacity: 1 !important;
+}
+
+.hljs-tag,
+.hljs-params {
+  color: #d1d5db !important;
+  opacity: 1 !important;
+}
+
+.hljs-function {
+  color: #fbbf24 !important;
+  opacity: 1 !important;
+}
+
+.hljs-regexp,
+.hljs-deletion {
+  color: #ef4444 !important;
+  opacity: 1 !important;
+}
+
+.hljs-addition {
+  color: #10b981 !important;
+  opacity: 1 !important;
+}
+
+.hljs-doctag,
+.hljs-strong {
+  font-weight: bold;
+  color: #e6e6e6 !important;
+  opacity: 1 !important;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+  color: #e6e6e6 !important;
+  opacity: 1 !important;
+}

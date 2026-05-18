@@ -1,0 +1,323 @@
+[
+  {
+    "nombre": "MARCO",
+    "tipo": "Agente",
+    "descripcion": "Entidad digital de Ciberseguridad y Riesgo Tecnológico de Plataforma IA, diseñada para guiar en la aplicación de estándares IT/OT. Su función es entregar pasos accionables y formularios obligatorios basados estrictamente en la jerarquía normativa interna (NCC, GCRT), prohibiendo el uso de referencias externas.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Ciberseguridad",
+    "division": "Ciberseguridad",
+    "casos_uso": [
+      "Un administrador de sistemas necesita saber cuáles son los pasos obligatorios y qué formulario (como el F-019) debe completar para solicitar la publicación de una nueva aplicación a Internet cumpliendo con la norma NCC-049."
+    ],
+    "beneficios": [
+      "Rigor Normativo",
+      "Eficiencia Operativa",
+      "Seguridad y Control"
+    ]
+  },
+  {
+    "nombre": "JURIS",
+    "tipo": "Agente",
+    "descripcion": "Este analista forense extrae datos técnicos de sentencias judiciales y litigios contra Plataforma IA, estructurando la información por fases procesales y validando jerárquicamente cada tribunal. Su rigor se centra en la trazabilidad de RITs y el análisis de materias como prescripción o daño moral, basándose exclusivamente en jurisprudencia oficial.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 4.1",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Juridico",
+    "division": "Vicepresidencia Legal",
+    "casos_uso": [
+      "Un abogado requiere conocer el RIT y el monto exacto de daño moral otorgado en una sentencia específica de la Corte de Apelaciones para preparar la defensa de un caso de enfermedad profesional similar."
+    ],
+    "beneficios": [
+      "Seguridad Jurídica",
+      "Eficiencia en Litigios",
+      "Análisis Especializado"
+    ]
+  },
+  {
+    "nombre": "GSSO-BOT QA",
+    "tipo": "Agente",
+    "descripcion": "Este es un asistente corporativo de alto rigor técnico diseñado para la eficiencia operativa. Su foco principal es la entrega de respuestas precisas basadas estrictamente en datos autorizados, manteniendo un tono profesional, seguro y adaptable al nivel de experiencia del usuario.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 4.1",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Auditoria",
+    "division": "VCO",
+    "casos_uso": [
+      "Un líder de equipo necesita redactar un correo formal para solicitar recursos adicionales a otra área, asegurándose de que el tono sea profesional y el mensaje esté orientado a la acción inmediata."
+    ],
+    "beneficios": [
+      "Confiabilidad Corporativa",
+      "Eficiencia Adaptable",
+      "Proactividad y Claridad"
+    ]
+  },
+  {
+    "nombre": "Agente Valores y Conducta",
+    "tipo": "Agente",
+    "descripcion": "Este asistente especializado de Plataforma IA actúa como un guardián ético que orienta a colaboradores y terceros basándose estrictamente en la Carta de Valores y el Código de Conducta. Su objetivo es asegurar el cumplimiento normativo mediante directrices claras de \"YO SIEMPRE\" y \"YO NUNCA\" para fortalecer la cultura de integridad y seguridad.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Auditoria",
+    "division": "VCO",
+    "casos_uso": [
+      "Un trabajador tiene dudas sobre si puede aceptar una invitación a un almuerzo por parte de un proveedor y consulta al agente para saber qué conductas están marcadas como \"YO NUNCA\" en el Código de Conducta."
+    ],
+    "beneficios": [
+      "Mitigación de Riesgos y Ética",
+      "Alineamiento Valórico Inmediato"
+    ]
+  },
+  {
+    "nombre": "MARCOS",
+    "tipo": "Agente",
+    "descripcion": "Asistente legal especializado de Plataforma IA, diseñado para el análisis técnico y síntesis de contratos, normativas y sentencias judiciales bajo estricta confidencialidad. Su función es entregar respuestas puramente textuales y precisas, estructuradas con citas exactas y referencias bibliográficas, eliminando cualquier tipo de interpretación o asesoría externa.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 4.1",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Juridico",
+    "division": "Vicepresidencia Legal",
+    "casos_uso": [
+      "Un analista jurídico necesita un resumen ejecutivo de un contrato de servicios de gran extensión, extrayendo las cláusulas de responsabilidad y multas sin necesidad de interpretación legal externa."
+    ],
+    "beneficios": [
+      "Rigor Documental y Trazabilidad",
+      "Neutralidad Jurídica",
+      "Eficiencia en el Análisis de Litigios"
+    ]
+  },
+  {
+    "nombre": "CORAL DT",
+    "tipo": "Agente",
+    "descripcion": "Entidad que actúa como filtro estricto de información laboral que conecta la realidad interna de Plataforma IA con la normativa oficial de la Dirección del Trabajo de Chile. Su propósito es resolver consultas legales sobre la Ley 40 Horas, dictámenes y la Ley Sanna, garantizando que cada respuesta esté anclada exclusivamente en fuentes gubernamentales y corporativas.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 4.1",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Juridico",
+    "division": "Vicepresidencia Legal",
+    "casos_uso": [
+      "Un supervisor de recursos humanos consulta el agente para verificar cómo se debe aplicar el registro de asistencia bajo la nueva Ley de 40 Horas, citando el dictamen oficial de la Dirección del Trabajo correspondiente."
+    ],
+    "beneficios": [
+      "Fidelidad Normativa",
+      "Especialización en Plataforma IA",
+      "Trazabilidad y Formato"
+    ]
+  },
+  {
+    "nombre": "Agente Creación de contratos",
+    "tipo": "Agente",
+    "descripcion": "Asistente técnico especializado en la gestión documental para la venta de cobre (concentrados y refinados). Su función principal es guiar al usuario en la personalización de contratos tipo \"Marco\" o \"Spot\", asegurando que cada cláusula de precio, pago e Incoterm se ajuste estrictamente a las plantillas oficiales de SharePoint.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 4.1",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Contractual",
+    "division": "VCO",
+    "casos_uso": [
+      "Un ejecutivo comercial necesita generar un borrador de contrato \"Spot\" para la venta puntual de cátodos de cobre, definiendo parámetros como el Incoterm CIF, la pureza del material y la vigencia del acuerdo."
+    ],
+    "beneficios": [
+      "Estandarización Contractual",
+      "Versatilidad Operativa",
+      "Seguridad y Control de Alcance"
+    ]
+  },
+  {
+    "nombre": "VCO MAF DS y NORMATIVAS",
+    "tipo": "Agente",
+    "descripcion": "Agente especializado en la interpretación y aplicación de normativas internas para VCO y MAF DS. Su función es guiar a los usuarios en procedimientos, requisitos y cumplimiento normativo mediante explicaciones concisas, ejemplos prácticos y la referencia directa a fuentes oficiales para asegurar la correcta ejecución de los procesos administrativos.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Atribuciones y Responsabilidades",
+    "division": "VCO",
+    "casos_uso": [
+      "Un Analista en responder consultas normativas, de cumplimiento, procesos internos, contratos base, políticas, dictámenes y documentos regulatorios internos/externos."
+    ],
+    "beneficios": [
+      "Agiliza consultas regulatorias y mejora el cumplimiento con respuestas basadas en fuentes oficiales"
+    ]
+  },
+  {
+    "nombre": "BusquedaNoticiasIN",
+    "tipo": "Agente",
+    "descripcion": "Este agente de Inteligencia de Mercado procesa y estructura noticias mineras obtenidas exclusivamente de Dataverse. Su función es validar, clasificar por relevancia analítica (oferta, demanda, precios) y formatear los registros bajo un estándar ejecutivo, garantizando la trazabilidad de fuentes y fechas sin añadir información externa.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Analisis de mercado",
+    "division": "VCO",
+    "casos_uso": [
+      "Buscar noticias o publicaciones informativas en fuentes autorizadas. Ej: Reuters, PortalMinero, Nuevamineria entre otras / base de noticias."
+    ],
+    "beneficios": [
+      "Centraliza información relevante del mercado desde fuentes confiables para una lectura rápida y oportuna"
+    ]
+  },
+  {
+    "nombre": "Analista de Reportes",
+    "tipo": "Agente",
+    "descripcion": "Analista especializado en el mercado del cobre que sintetiza reportes de Plataforma IA y CRU. Su función es extraer datos precisos sobre precios, inventarios y TC/RC, aplicando un enrutamiento obligatorio de documentos según el tema (refinado o concentrados) para garantizar respuestas técnicas, citadas y contextualizadas con visión de mercado.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Analista de mercado",
+    "division": "VCO",
+    "casos_uso": [
+      "Resume y extrae hallazgos clave desde reportes de mercado de cobre y concentrados, entregando insights ejecutivos sobre precios, oferta, demanda, balances y TC/RCs para apoyar decisiones comerciales."
+    ],
+    "beneficios": [
+      "Transforma reportes extensos en insights ejecutivos para apoyar decisiones comerciales"
+    ]
+  },
+  {
+    "nombre": "Analista Documental",
+    "tipo": "Agente",
+    "descripcion": "Analiza documentos PDF adjuntos, genera un resumen ejecutivo y responde preguntas específicas basadas en el contenido del PDF.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Corporación",
+    "division": "DAN",
+    "casos_uso": [
+      "Analista Documental Inteligente permite a cualquier usuario cargar un PDF en el chat y obtener instantáneamente un resumen ejecutivo, consultar datos específicos con referencia de página exacta, y mantener una conversación continua sobre el documento."
+    ],
+    "beneficios": [
+      "Ahorra tiempo eliminando la lectura completa de documentos",
+      "Permite consultar información específica de forma instantánea sin hojear el archivo",
+      "Cualquier usuario analiza documentos complejos de forma simple y conversacional"
+    ]
+  },
+  {
+    "nombre": "Agente Redactor Corporativo",
+    "tipo": "Agente",
+    "descripcion": "Transforma ideas informales en correos profesionales formales y guarda el borrador en Outlook tras aprobación del usuario.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Corporación",
+    "division": "DAN",
+    "casos_uso": [
+      "Redacción de correos ejecutivos por voz desde Teams móvil, avisos y coordinaciones internas, comunicaciones hacia proveedores y clientes externos, y transformación de ideas informales en borradores profesionales listos para enviar desde Outlook."
+    ],
+    "beneficios": [
+      "Ahorra tiempo convirtiendo ideas en correos formales en segundos",
+      "Elimina la fricción de escribir desde el teléfono",
+      "Garantiza consistencia en el tono corporativo",
+      "Permite gestionar comunicaciones importantes desde cualquier lugar"
+    ]
+  },
+  {
+    "nombre": "Analista CV",
+    "tipo": "Agente",
+    "descripcion": "Agente especializado en el soporte para la toma de decisiones técnicas y administrativas mediante la evaluación exhaustiva de perfiles profesionales y propuestas técnicas en procesos de licitación de Plataforma IA. Su función principal es actuar como un auditor independiente que valida el cumplimiento de los términos de referencia, realizando comparaciones directas entre candidatos, generando rankings de idoneidad y detectando brechas críticas en la experiencia o certificaciones obligatorias. El agente opera bajo un criterio documental estricto, procesando exclusivamente la información extraída de los archivos cargados para garantizar resultados trazables, objetivos y libres de inferencias, orientados a minimizar los riesgos en la selección de colaboradores y empresas contratistas.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Corporación",
+    "division": "DAN",
+    "casos_uso": [
+      "Evaluación de CVs contra términos de referencia en procesos de licitación, comparación directa entre candidatos y generación de rankings de idoneidad, detección de brechas en experiencia o certificaciones obligatorias, y auditoría documental de propuestas técnicas de empresas contratistas."
+    ],
+    "beneficios": [
+      "Acelera y objetiviza la toma de decisiones en procesos de selección",
+      "Elimina inferencias al trabajar exclusivamente con la información documentada",
+      "Reduce el riesgo de contratar perfiles que no cumplen los requisitos técnicos",
+      "Genera resultados trazables y auditables"
+    ]
+  },
+  {
+    "nombre": "Analista de Bases de Licitación",
+    "tipo": "Agente",
+    "descripcion": "Este agente está especializado en el análisis técnico y administrativo de procesos de licitación de Plataforma IA. Su enfoque principal es la interpretación rigurosa de Bases Administrativas, Bases Técnicas y Anexos de licitación. Su función primordial es realizar un análisis detallado de los documentos cargados por el usuario para identificar requerimientos críticos, detectar cláusulas de multas por incumplimiento, extraer condiciones de garantías financieras y determinar plazos contractuales. El agente opera bajo un modelo de fuente única de verdad, lo que significa que procesa exclusivamente la información contenida en los documentos proporcionados, garantizando respuestas precisas, trazables y con citación explícita de secciones y cláusulas.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Corporación",
+    "division": "DAN",
+    "casos_uso": [
+      "Análisis de Bases Administrativas, Técnicas y Anexos de licitación, identificación de requerimientos críticos y cláusulas de multas, extracción de condiciones de garantías financieras y plazos contractuales, y consultas específicas sobre cualquier sección o cláusula de los documentos cargados."
+    ],
+    "beneficios": [
+      "Reduce el tiempo de revisión de documentos extensos de licitación",
+      "Elimina el riesgo de omitir cláusulas críticas o condiciones contractuales relevantes",
+      "Garantiza respuestas precisas y trazables con citación explícita de fuentes",
+      "Permite que cualquier miembro del equipo consulte bases complejas sin ser experto en contratación"
+    ]
+  },
+  {
+    "nombre": "Analista de Minutas v2",
+    "tipo": "Agente",
+    "descripcion": "Secretario Ejecutivo de Auditoría especializado en el análisis de reuniones estratégicas. Este agente procesa transcripciones de Microsoft Teams para generar actas de alta fidelidad con una estructura técnica rigurosa. Su enfoque principal es la identificación de compromisos, responsables y plazos (TBD), garantizando precisión absoluta mediante políticas de cero alucinación y fidelidad lingüística total.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Corporación",
+    "division": "DAN",
+    "casos_uso": [
+      "Procesamiento de transcripciones de reuniones de Microsoft Teams para generar actas estructuradas, identificación automática de compromisos, responsables y plazos, documentación de reuniones estratégicas con alta fidelidad, y seguimiento de acuerdos pendientes con fechas por definir."
+    ],
+    "beneficios": [
+      "Elimina el tiempo dedicado a redactar actas manualmente",
+      "Garantiza que ningún compromiso o responsable quede fuera del registro",
+      "Asegura precisión absoluta trabajando exclusivamente con la transcripción real",
+      "Genera documentación trazable y auditable de todas las decisiones"
+    ]
+  },
+  {
+    "nombre": "Responsible Sourcing Analyst",
+    "tipo": "Agente",
+    "descripcion": "Asistente analítico especializado en sostenibilidad que extrae, valida y consolida requerimientos técnicos frente a la base de datos de gestión de suministros en Dataverse. Su función es identificar frases clave en documentos, ejecutar búsquedas por coincidencia de contenido y presentar una tabla comparativa detallada sobre el cumplimiento y respuestas registradas en diversas divisiones operativas.",
+    "creador": "Equipo IA",
+    "modelo": "Claude Sonnet 4.6",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Sostenibilidad",
+    "division": "Sostenibilidad Comercial",
+    "casos_uso": [
+      "Escanea los términos, busca coincidencias históricas en la base de datos y genera una tabla de cumplimiento por división."
+    ],
+    "beneficios": [
+      "Optimiza la productividad automatizando la extracción y clasificación de datos críticos desde fuentes oficiales",
+      "Garantiza trazabilidad y precisión técnica",
+      "Reduce el riesgo operativo y asegura la consistencia en la toma de decisiones estratégicas"
+    ]
+  },
+  {
+    "nombre": "Responsible Sourcing Manager",
+    "tipo": "Agente",
+    "descripcion": "Asistente analítico avanzado para la gestión integral de sostenibilidad que extrae requerimientos técnicos de documentos y los concilia con Dataverse mediante el servidor MCP. Su función abarca desde la búsqueda exacta y el filtrado dinámico de preguntas en su idioma original, hasta la creación y actualización proactiva de registros, garantizando la integridad total de los datos y la persistencia de la información sin traducciones ni alucinaciones.",
+    "creador": "Equipo IA",
+    "modelo": "GPT 5 CHAT",
+    "estado": "Producción",
+    "enlace": "",
+    "categoria": "Sostenibilidad",
+    "division": "Sostenibilidad Comercial",
+    "casos_uso": [
+      "El agente automatiza el ciclo de vida de auditorías de sostenibilidad mediante la extracción precisa de consultas en documentos y su conciliación en tiempo real con Dataverse vía MCP. Facilita la gestión proactiva de datos permitiendo buscar, crear y actualizar registros técnicos sin traducciones, asegurando la integridad de las respuestas y la trazabilidad de evidencias en un entorno de producción crítico."
+    ],
+    "beneficios": [
+      "Optimiza la gestión de sostenibilidad mediante sincronización bidireccional con Dataverse",
+      "Elimina errores de traducción y alucinaciones en datos técnicos críticos",
+      "Garantiza la integridad de la información mediante identificadores únicos para actualizaciones precisas",
+      "Permite trazabilidad total de evidencias y reducción drástica del esfuerzo manual"
+    ]
+  }
+]

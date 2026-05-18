@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block body %}
+<section class="cover">
+  <div>
+    <div class="brand">Plataforma IA</div>
+    <h1>{{ spec.title }}</h1>
+    {% if spec.subtitle %}<div class="subtitle">{{ spec.subtitle }}</div>{% endif %}
+  </div>
+  <div class="meta">
+    {% if spec.author %}<div><span class="meta-label">Autor</span><br>{{ spec.author }}</div>{% endif %}
+    {% if spec.division %}<div><span class="meta-label">División</span><br>{{ spec.division }}</div>{% endif %}
+    {% if spec.date %}<div><span class="meta-label">Fecha</span><br>{{ spec.date }}</div>{% endif %}
+  </div>
+</section>
+
+<span class="doc-date-anchor">{{ spec.date|default('') }}</span>
+
+<main class="content">
+  {% for section in spec.sections %}
+  <section class="section{% if section.page_break %} page-break{% endif %}">
+    {% if section.heading %}<h2>{{ section.heading }}</h2>{% endif %}
+
+    {% if section.kpis %}
+    <div class="kpis">
+      {% for kpi in section.kpis %}
+      <div class="kpi{% if kpi.trend %} trend-{{ kpi.trend }}{% endif %}">
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <div class="kpi-value">{{ kpi.value }}</div>
+        {% if kpi.caption %}<div class="kpi-caption">{{ kpi.caption }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if section.body %}
+      {% for paragraph in section.body.split('\n\n') %}
+        {% if paragraph.strip() %}<p>{{ paragraph|trim }}</p>{% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if section.bullets %}
+    <ul>
+      {% for item in section.bullets %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if section.table %}
+    <table class="data">
+      {% if section.table.caption %}<caption>{{ section.table.caption }}</caption>{% endif %}
+      <thead>
+        <tr>{% for h in section.table.headers %}<th>{{ h }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+        {% for row in section.table.rows %}
+        <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+  {% endfor %}
+</main>
+{% endblock %}
