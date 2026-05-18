@@ -18,8 +18,13 @@ const Layout = ({ children }: LayoutProps) => {
     document.documentElement.setAttribute('data-primary', BRAND.primary);
   }, []);
 
+  // En el chat necesitamos altura FIJA al viewport para que el scroll interno
+  // del panel de mensajes funcione sin generar scroll del body. En el resto
+  // de las páginas usamos min-h-screen porque el contenido puede ser largo.
   return (
-    <div className="min-h-screen flex flex-col bg-bg">
+    <div
+      className={`flex flex-col bg-bg ${hideFooter ? 'h-screen overflow-hidden' : 'min-h-screen'}`}
+    >
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100]
@@ -30,7 +35,11 @@ const Layout = ({ children }: LayoutProps) => {
         Saltar al contenido
       </a>
       <TopNav />
-      <main id="main-content" className="flex-1 flex flex-col" tabIndex={-1}>
+      <main
+        id="main-content"
+        className={`flex-1 flex flex-col ${hideFooter ? 'min-h-0' : ''}`}
+        tabIndex={-1}
+      >
         {children}
       </main>
       {!hideFooter && <Footer />}

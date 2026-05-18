@@ -980,6 +980,10 @@ def build_agent_system_prompt(agent: Dict[str, Any]) -> str:
     beneficios = agent.get("beneficios") or []
     creador = agent.get("creador") or ""
 
+    # Pre-computado fuera del f-string porque Python 3.11 prohíbe
+    # backslashes dentro de expresiones de f-string.
+    team_block = f"### Equipo responsable\n{creador}" if creador else ""
+
     persona_block = f"""
 ## TU ROL EN ESTA CONVERSACIÓN
 
@@ -995,7 +999,7 @@ Plataforma IA, dentro de la categoría **{categoria}** (división: {division}).
 ### Beneficios que aportas al usuario
 {_fmt_list(beneficios)}
 
-{f"### Equipo responsable\\n{creador}" if creador else ""}
+{team_block}
 
 ---
 

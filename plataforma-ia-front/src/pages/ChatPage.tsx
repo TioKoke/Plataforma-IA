@@ -895,7 +895,7 @@ const ChatPage = () => {
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           {/* Chat-specific header: alineado a la misma columna que mensajes e input */}
           <div className="bg-bg-elev border-b border-border-soft flex-shrink-0">
-            <div className="w-full max-w-[820px] mx-auto px-6 py-3.5 flex items-center justify-between">
+            <div className="w-full max-w-[820px] mx-auto px-6 py-2.5 flex items-center justify-between">
               <div className="flex items-center min-w-0">
                 <div className="size-9 rounded-[10px] grid place-items-center bg-ink text-bg-elev mr-3 shrink-0">
                   <Bot size={18} />
@@ -944,20 +944,20 @@ const ChatPage = () => {
           {/* Messages */}
           <div ref={messagesContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 bg-bg">
             <div className="w-full max-w-[820px] mx-auto px-2">
-              {/* Welcome screen — Claude Design */}
+              {/* Welcome screen — Claude Design (compacto) */}
               {messages.length === 0 && !streamingState && (
-                <div className="flex flex-col items-center py-8 animate-fadeIn w-full">
-                  <div className="size-14 rounded-2xl bg-ink text-bg-elev grid place-items-center mb-6">
-                    <Bot size={28} />
+                <div className="flex flex-col items-center py-4 animate-fadeIn w-full">
+                  <div className="size-12 rounded-2xl bg-ink text-bg-elev grid place-items-center mb-4">
+                    <Bot size={24} />
                   </div>
-                  <h2 className="ck-display text-[38px] text-center leading-tight">
+                  <h2 className="ck-display text-[32px] text-center leading-tight">
                     ¿En qué te ayudo hoy?
                   </h2>
-                  <p className="text-center mt-3 text-ink-muted text-[15px] max-w-[520px]">
+                  <p className="text-center mt-2 text-ink-muted text-[14px] max-w-[520px]">
                     Tu asistente inteligente para explorar agentes, aprender conceptos clave y crear soluciones con IA.
                   </p>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 mt-8 w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 mt-6 w-full">
                     {quickActions.slice(0, 3).map((action, index) => (
                       <button
                         key={index}
