@@ -303,29 +303,33 @@
   }
 }
 
-/* Smooth Scrollbar */
+/* Scrollbar — neutro alineado al design system */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--bg);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #E55302 0%, #F4AA00 100%);
-  border-radius: 10px;
+  background: oklch(0.85 0.008 250);
+  border-radius: 8px;
+  border: 2px solid var(--bg);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #d14902 0%, #e09900 100%);
+  background: oklch(0.75 0.012 250);
 }
 
-/* Selection Color */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.85 0.008 250) var(--bg);
+}
+
+/* Selection — usa el primary del design system */
 ::selection {
-  background: rgba(229, 83, 2, 0.2);
-  color: #36424A;
+  background: var(--primary-soft);
+  color: var(--primary-ink);
 }
 
 ::-moz-selection {

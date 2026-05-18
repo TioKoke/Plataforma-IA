@@ -167,59 +167,58 @@ const DashboardPage = () => {
   return (
     <>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 className="font-heading font-semibold text-plataforma-gris-oscuro text-3xl mb-2">
-                {viewMode === 'gerencial' ? 'Dashboard Ejecutivo' : 'Dashboard de Métricas'}
-              </h1>
-              <p className="text-gray-600">
-                {viewMode === 'gerencial'
-                  ? 'Resumen ejecutivo de adopción e impacto de IA en Plataforma IA'
-                  : 'Monitoreo en tiempo real de adopción y uso de IA en Plataforma IA'}
-              </p>
-            </div>
-
-            <div className="mt-4 md:mt-0 flex items-center space-x-3">
-              <span className="text-sm text-gray-600">Vista:</span>
-              <div className="flex bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode('operacional')}
-                  className={`px-4 py-2 rounded-md font-medium text-sm transition-all ${
-                    viewMode === 'operacional'
-                      ? 'bg-plataforma-naranja text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Operacional
-                </button>
-                <button
-                  onClick={() => setViewMode('gerencial')}
-                  className={`px-4 py-2 rounded-md font-medium text-sm transition-all ${
-                    viewMode === 'gerencial'
-                      ? 'bg-plataforma-naranja text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Gerencial
-                </button>
-              </div>
+      <section className="border-b border-border-soft">
+        <div className="ck-container pt-10 pb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <span className="ck-pill mb-3">
+              <Layers className="size-3" />
+              <span className="ck-mono text-[11px] tracking-wider text-ink-2">
+                {viewMode === 'gerencial' ? 'EJECUTIVO' : 'OPERACIONAL'}
+              </span>
+            </span>
+            <h1 className="ck-display text-[40px] leading-tight">
+              Dashboard
+            </h1>
+            <p className="text-base text-ink-muted mt-2 max-w-[640px]">
+              {viewMode === 'gerencial'
+                ? 'Resumen ejecutivo de adopción e impacto de IA en la plataforma.'
+                : 'Monitoreo en tiempo real de adopción y uso de IA en la plataforma.'}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-[13px] text-ink-muted">Vista:</span>
+            <div className="flex gap-0.5 bg-bg-inset p-1 rounded-full border border-border-soft">
+              {(['operacional', 'gerencial'] as const).map((mode) => {
+                const active = viewMode === mode;
+                return (
+                  <button
+                    key={mode}
+                    onClick={() => setViewMode(mode)}
+                    className={`px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all capitalize ${
+                      active
+                        ? 'bg-bg-elev text-ink shadow-[0_1px_2px_oklch(0.18_0.02_255/0.06),0_0_0_1px_var(--border-soft)]'
+                        : 'text-ink-muted hover:text-ink-2'
+                    }`}
+                  >
+                    {mode}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-bg">
+        <div className="ck-container py-8">
           {/* Filters */}
-          <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 mb-8 flex flex-wrap gap-4 items-center">
-            <div className="flex items-center space-x-2">
-              <Calendar size={18} className="text-gray-400" />
+          <div className="ck-card p-4 mb-8 flex flex-wrap gap-3 items-center">
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-ink-muted" />
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-plataforma-naranja"
+                className="px-3 py-2 bg-bg-elev border border-border-soft rounded-md text-sm text-ink focus:outline-none focus:border-[var(--primary-ck)]"
               >
                 {dateRanges.map((range) => (
                   <option key={range.value} value={range.value}>{range.label}</option>
@@ -230,16 +229,16 @@ const DashboardPage = () => {
             <select
               value={selectedDivision}
               onChange={(e) => setSelectedDivision(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-plataforma-naranja"
+              className="px-3 py-2 bg-bg-elev border border-border-soft rounded-md text-sm text-ink focus:outline-none focus:border-[var(--primary-ck)]"
             >
               {divisions.map((div) => (
                 <option key={div} value={div}>{div === 'Todas' ? 'Todas las divisiones' : div}</option>
               ))}
             </select>
 
-            <button className="ml-auto bg-plataforma-naranja text-white px-5 py-2 rounded-lg font-medium text-sm hover:bg-plataforma-naranja/90 transition-colors flex items-center space-x-2">
-              <Download size={16} />
-              <span>Exportar Reporte</span>
+            <button className="ck-btn ck-btn-primary ml-auto">
+              <Download size={14} />
+              Exportar Reporte
             </button>
           </div>
 

@@ -6,6 +6,7 @@ import {
 import { fetchVideos } from '../services/videosApi';
 import type { Video as VideoT } from '../services/videosApi';
 import YouTubeFacade from '../components/YouTubeFacade';
+import { CourseWorkspace } from '../components/courses/CourseWorkspace';
 
 type Tab = 'videos' | 'cursos' | 'best' | 'gloss';
 
@@ -74,14 +75,26 @@ export default function LearnPage() {
         </div>
       </section>
 
-      <section className="pt-10 pb-16">
-        <div className="ck-container">
-          {tab === 'videos' && <VideoGrid q={q} />}
-          {tab === 'cursos' && <CoursesGrid />}
-          {tab === 'best'   && <BestPracticesGrid />}
-          {tab === 'gloss'  && <Glossary />}
-        </div>
-      </section>
+      {tab === 'cursos' ? (
+        <section className="pt-6 pb-10">
+          <div className="ck-container">
+            <div
+              className="ck-card overflow-hidden bg-bg-elev"
+              style={{ height: 'calc(100vh - 360px)', minHeight: 560 }}
+            >
+              <CourseWorkspace />
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="pt-10 pb-16">
+          <div className="ck-container">
+            {tab === 'videos' && <VideoGrid q={q} />}
+            {tab === 'best'   && <BestPracticesGrid />}
+            {tab === 'gloss'  && <Glossary />}
+          </div>
+        </section>
+      )}
     </>
   );
 }
@@ -304,48 +317,7 @@ function VideoModal({ video, onClose }: { video: VideoT; onClose: () => void }) 
   );
 }
 
-/* ─────────────────── Cursos / Best Practices / Glossary (estáticos) ─────────────────── */
-
-function CoursesGrid() {
-  const courses = [
-    { title: 'Fundamentos de IA para no técnicos',   modules: 8,  hours: '4.5h', level: 'Básico',     progress: 60 },
-    { title: 'Construye tu primer agente con RAG',   modules: 12, hours: '8h',   level: 'Intermedio', progress: 20 },
-    { title: 'Gobernanza de IA en empresas grandes', modules: 6,  hours: '3h',   level: 'Avanzado',   progress: 0  },
-    { title: 'Evaluación y monitoreo de agentes',    modules: 10, hours: '6h',   level: 'Avanzado',   progress: 0  },
-  ];
-  return (
-    <div className="grid grid-cols-2 gap-5">
-      {courses.map((c) => (
-        <div key={c.title} className="ck-card p-6">
-          <div className="flex justify-between items-start mb-4">
-            <span className="size-11 rounded-[10px] grid place-items-center bg-ink text-bg-elev">
-              <BookOpen className="size-5" />
-            </span>
-            <span className="ck-pill text-[11px]">{c.level}</span>
-          </div>
-          <h3 className="ck-display text-[20px]">{c.title}</h3>
-          <div className="flex gap-4 mt-3 text-[12.5px] text-ink-muted">
-            <span>{c.modules} módulos</span>
-            <span>·</span>
-            <span>{c.hours} estimadas</span>
-          </div>
-          <div className="mt-4">
-            <div className="flex justify-between text-xs text-ink-muted mb-1.5">
-              <span>Progreso</span>
-              <span className="ck-mono text-ink-2">{c.progress}%</span>
-            </div>
-            <div className="h-1.5 bg-bg-inset rounded-full overflow-hidden">
-              <div className="h-full rounded-full" style={{ width: `${c.progress}%`, background: 'var(--primary-ck)' }} />
-            </div>
-          </div>
-          <button className="ck-btn ck-btn-outline mt-4 w-full justify-center">
-            {c.progress === 0 ? 'Empezar curso' : 'Continuar'}
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
+/* ─────────────────── Best Practices / Glossary (estáticos) ─────────────────── */
 
 function BestPracticesGrid() {
   const items = [

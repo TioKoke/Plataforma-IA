@@ -227,29 +227,28 @@ const ConnectorsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-16">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+    <div className="min-h-screen bg-bg pb-16">
+      <div className="ck-container max-w-3xl pt-10">
 
-        {/* Header */}
+        {/* Header — design system */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
           className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-plataforma-naranja flex items-center justify-center shadow">
-              <Plug size={20} className="text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-heading font-bold text-plataforma-gris-oscuro leading-tight">
-                Conectores
-              </h1>
-              <p className="text-sm text-gray-500">
-                Conecta tus cuentas para que el agente pueda actuar en tu nombre
-              </p>
-            </div>
-          </div>
+          <span className="ck-pill mb-3">
+            <Plug className="size-3" />
+            <span className="ck-mono text-[11px] tracking-wider text-ink-2">
+              INTEGRACIONES
+            </span>
+          </span>
+          <h1 className="ck-display text-[40px] leading-tight">
+            Conectores
+          </h1>
+          <p className="text-base text-ink-muted mt-2">
+            Conecta tus cuentas para que los agentes puedan actuar en tu nombre.
+          </p>
         </motion.div>
 
         {/* Mensajes de estado */}

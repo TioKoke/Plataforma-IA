@@ -593,46 +593,49 @@ const BacklogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <div className="min-h-screen bg-bg">
+      <div className="ck-container py-10">
 
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-plataforma-gris-oscuro rounded-lg flex items-center justify-center">
-              <ClipboardList size={22} className="text-white" />
-            </div>
-            <div>
-              <h1 className="font-heading font-bold text-xl text-plataforma-gris-oscuro">Backlog de Requerimientos</h1>
-              <p className="text-sm text-gray-500">Propuestas de nuevos agentes IA · División {userDivision}</p>
-            </div>
+        {/* Header — design system */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="ck-pill mb-3">
+              <ClipboardList className="size-3" />
+              <span className="ck-mono text-[11px] tracking-wider text-ink-2">
+                MIS REQUERIMIENTOS
+              </span>
+            </span>
+            <h1 className="ck-display text-[40px] leading-tight">
+              Backlog
+            </h1>
+            <p className="text-base text-ink-muted mt-2">
+              Propuestas de nuevos agentes IA{userDivision ? ` · División ${userDivision}` : ''}.
+            </p>
           </div>
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-plataforma-naranja text-white rounded-lg text-sm hover:bg-plataforma-naranja/90 transition-colors font-medium"
+            className="ck-btn ck-btn-primary"
           >
-            <Plus size={18} />
+            <Plus className="size-4" />
             Nuevo requerimiento
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 mb-4 bg-white border border-gray-200 rounded-lg p-1 w-fit">
+        {/* Tabs — pill-style */}
+        <div className="flex gap-0.5 mb-5 bg-bg-inset p-1 rounded-full border border-border-soft w-fit">
           <button
             onClick={() => setActiveTab('mis')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === 'mis'
-              ? 'bg-plataforma-naranja text-white'
-              : 'text-gray-600 hover:text-plataforma-naranja'
-              }`}
+            className={`px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all ${activeTab === 'mis'
+              ? 'bg-bg-elev text-ink shadow-[0_1px_2px_oklch(0.18_0.02_255/0.06),0_0_0_1px_var(--border-soft)]'
+              : 'text-ink-muted hover:text-ink-2'}`}
           >
             Mis requerimientos
           </button>
           <button
             onClick={() => setActiveTab('todos')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === 'todos'
-              ? 'bg-plataforma-naranja text-white'
-              : 'text-gray-600 hover:text-plataforma-naranja'
-              }`}
+            className={`px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all ${activeTab === 'todos'
+              ? 'bg-bg-elev text-ink shadow-[0_1px_2px_oklch(0.18_0.02_255/0.06),0_0_0_1px_var(--border-soft)]'
+              : 'text-ink-muted hover:text-ink-2'}`}
           >
             {canManage ? 'Todos' : `Todos (${userDivision})`}
           </button>
