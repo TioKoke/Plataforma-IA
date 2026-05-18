@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Pencil, Trash2, Plus, Bot, Save, X, ImagePlus } from 'lucide-react';
+import {
+    Pencil, Trash2, Plus, Bot, Save, X, ImagePlus,
+    Search, Sparkles, ListChecks, Award, Image as ImageIcon, Settings,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useAlert } from '../../context/AlertContext';
-import { fetchAgents, createAgent, updateAgent, deleteAgent, uploadAgentIcon } from '../../services/agentsApi';
+import {
+    fetchAgents, createAgent, updateAgent, deleteAgent, uploadAgentIcon,
+} from '../../services/agentsApi';
 import type { Agent } from '../../services/agentsApi';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -13,27 +18,35 @@ function resolveIconUrl(icon_url: string): string {
 }
 
 /** Mini avatar para tabla y modal */
-function AgentAvatar({ icon_url, size = 8 }: { icon_url?: string; size?: number }) {
+function AgentAvatar({ icon_url, sizePx = 32 }: { icon_url?: string; sizePx?: number }) {
     const [failed, setFailed] = useState(false);
-    const cls = `w-${size} h-${size} rounded-lg object-cover`;
     if (icon_url && !failed) {
         return (
             <img
                 src={resolveIconUrl(icon_url)}
                 onError={() => setFailed(true)}
-                className={cls}
+                className="rounded-lg object-cover"
+                style={{ width: sizePx, height: sizePx }}
                 alt="icon"
             />
         );
     }
-    return <Bot size={size * 4} className="text-gray-400" />;
+    return <Bot size={Math.round(sizePx * 0.55)} className="text-ink-muted" />;
 }
+
+const STATE_STYLES: Record<string, string> = {
+    Activo: 'bg-bg-inset text-ink-2 border-border-soft',
+    Inactivo: 'bg-bg-inset text-ink-muted border-border-soft',
+    'En Desarrollo': 'bg-bg-inset text-ink-muted border-border-soft',
+    Producción: 'bg-bg-inset text-ink-2 border-border-soft',
+};
 
 const AgentsTab = () => {
     const { getIdToken } = useAuth();
     const { showAlert } = useAlert();
     const [agents, setAgents] = useState<Agent[]>([]);
     const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
 
@@ -51,19 +64,12 @@ const AgentsTab = () => {
         }
     }, [showAlert, getIdToken]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+    useEffect(() => { loadData(); }, [loadData]);
 
     const handleOpenModal = (agent?: Agent) => {
-        if (agent) {
-            setEditingAgent(agent);
-        } else {
-            setEditingAgent(null);
-        }
+        setEditingAgent(agent ?? null);
         setIsModalOpen(true);
     };
-
     const closeModal = () => {
         setIsModalOpen(false);
         setEditingAgent(null);
@@ -82,66 +88,129 @@ const AgentsTab = () => {
         }
     };
 
+    const filtered = search
+        ? agents.filter((a) => {
+              const q = search.toLowerCase();
+              return (
+                  a.nombre.toLowerCase().includes(q) ||
+                  a.categoria.toLowerCase().includes(q) ||
+                  a.division.toLowerCase().includes(q)
+              );
+          })
+        : agents;
+
     return (
         <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                    <Bot size={20} className="text-plataforma-naranja" />
-                    Catálogo de Agentes
-                </h2>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="flex items-center gap-2 px-4 py-2 bg-plataforma-naranja text-white font-medium rounded-lg hover:bg-orange-600 transition-colors"
-                >
-                    <Plus size={18} />
-                    Nuevo Agente
-                </button>
+            {/* Heading + acciones */}
+            <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
+                <div>
+                    <h2 className="ck-display text-[22px] flex items-center gap-2.5">
+                        <span
+                            className="size-8 rounded-lg grid place-items-center"
+                            style={{ background: 'var(--primary-soft)', color: 'var(--primary-ink)' }}
+                        >
+                            <Bot size={16} />
+                        </span>
+                        Catálogo de Agentes
+                    </h2>
+                    <p className="text-sm text-ink-muted mt-1.5">
+                        Edita la configuración, el modelo, los casos de uso y los beneficios de cada agente.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                    <div className="flex items-center px-3 bg-bg-elev border border-border-soft rounded-[10px] h-10 w-72">
+                        <Search className="size-4 text-ink-muted-soft" />
+                        <input
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Buscar por nombre, categoría…"
+                            className="flex-1 px-2.5 bg-transparent border-0 outline-none text-sm text-ink"
+                        />
+                    </div>
+                    <button
+                        onClick={() => handleOpenModal()}
+                        className="ck-btn ck-btn-primary"
+                    >
+                        <Plus size={16} />
+                        Nuevo agente
+                    </button>
+                </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            {/* Tabla */}
+            <div className="ck-card overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm whitespace-nowrap">
-                        <thead className="bg-gray-50 border-b border-gray-200 text-gray-600">
-                            <tr>
-                                <th className="px-6 py-4 font-semibold">Nombre</th>
-                                <th className="px-6 py-4 font-semibold">Categoría</th>
-                                <th className="px-6 py-4 font-semibold">División</th>
-                                <th className="px-6 py-4 font-semibold">Estado</th>
-                                <th className="px-6 py-4 font-semibold text-right">Acciones</th>
+                        <thead className="border-b border-border-soft bg-bg-inset/60">
+                            <tr className="ck-mono text-[11px] tracking-wider text-ink-muted">
+                                <th className="px-5 py-3 font-medium uppercase">Nombre</th>
+                                <th className="px-5 py-3 font-medium uppercase">Categoría</th>
+                                <th className="px-5 py-3 font-medium uppercase">División</th>
+                                <th className="px-5 py-3 font-medium uppercase">Modelo</th>
+                                <th className="px-5 py-3 font-medium uppercase">Estado</th>
+                                <th className="px-5 py-3 font-medium uppercase text-right">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-border-soft">
                             {loading ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Cargando...</td></tr>
-                            ) : agents.length === 0 ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">No hay agentes registrados</td></tr>
+                                <tr>
+                                    <td colSpan={6} className="px-5 py-10 text-center text-ink-muted text-sm">
+                                        Cargando agentes…
+                                    </td>
+                                </tr>
+                            ) : filtered.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="px-5 py-10 text-center text-ink-muted text-sm">
+                                        {search ? 'Sin resultados para tu búsqueda.' : 'No hay agentes registrados.'}
+                                    </td>
+                                </tr>
                             ) : (
-                                agents.map((ag) => (
-                                    <tr key={ag.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-gray-900 border-l-4 border-transparent hover:border-plataforma-naranja">
+                                filtered.map((ag) => (
+                                    <tr key={ag.id} className="hover:bg-bg-inset/60 transition-colors">
+                                        <td className="px-5 py-3.5">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                                                    <AgentAvatar icon_url={ag.icon_url} size={8} />
+                                                <div className="size-9 rounded-lg bg-bg-inset border border-border-soft grid place-items-center shrink-0 overflow-hidden">
+                                                    <AgentAvatar icon_url={ag.icon_url} sizePx={32} />
                                                 </div>
-                                                {ag.nombre}
+                                                <div className="min-w-0">
+                                                    <div className="font-medium text-ink truncate">{ag.nombre}</div>
+                                                    <div className="text-[12px] text-ink-muted truncate">
+                                                        {ag.tipo || 'Agente'}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">{ag.categoria}</span>
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-600">{ag.division}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 rounded text-xs font-medium ${ag.estado === 'Activo' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'
-                                                }`}>
-                                                {ag.estado}
+                                        <td className="px-5 py-3.5">
+                                            <span className="ck-mono text-[10.5px] tracking-wider px-1.5 py-0.5 rounded bg-bg-inset text-ink-2 border border-border-soft">
+                                                {ag.categoria}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button onClick={() => handleOpenModal(ag)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors mr-2">
-                                                <Pencil size={16} />
+                                        <td className="px-5 py-3.5 text-ink-muted text-[13px]">{ag.division}</td>
+                                        <td className="px-5 py-3.5 text-ink-muted text-[12.5px] ck-mono">{ag.modelo}</td>
+                                        <td className="px-5 py-3.5">
+                                            <span
+                                                className={`ck-mono text-[10.5px] tracking-wider px-1.5 py-0.5 rounded border ${
+                                                    STATE_STYLES[ag.estado] ?? STATE_STYLES.Activo
+                                                }`}
+                                            >
+                                                {ag.estado.toUpperCase()}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-3.5 text-right">
+                                            <button
+                                                onClick={() => handleOpenModal(ag)}
+                                                className="inline-flex items-center justify-center size-8 rounded-lg text-ink-muted hover:text-ink-2 hover:bg-bg-inset transition-colors mr-1"
+                                                title="Editar agente"
+                                            >
+                                                <Pencil size={14} />
                                             </button>
-                                            <button onClick={() => handleDelete(ag.id, ag.categoria)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                                                <Trash2 size={16} />
+                                            <button
+                                                onClick={() => handleDelete(ag.id, ag.categoria)}
+                                                className="inline-flex items-center justify-center size-8 rounded-lg text-ink-muted hover:text-red-600 hover:bg-bg-inset transition-colors"
+                                                title="Eliminar agente"
+                                            >
+                                                <Trash2 size={14} />
                                             </button>
                                         </td>
                                     </tr>
@@ -164,6 +233,8 @@ const AgentsTab = () => {
     );
 };
 
+/* ─────────────────────────────────────────────────────────────────────── */
+
 interface AgentModalProps {
     agent: Agent | null;
     onClose: () => void;
@@ -171,20 +242,27 @@ interface AgentModalProps {
     getIdToken: () => Promise<string | null>;
 }
 
+const SECTION_CLS = 'rounded-xl border border-border-soft bg-bg-elev p-5 space-y-4';
+const LABEL_CLS = 'block text-[12px] font-medium text-ink-2 mb-1.5';
+const INPUT_CLS =
+    'w-full px-3 py-2 bg-bg-elev border border-border-soft rounded-[10px] text-sm text-ink ' +
+    'placeholder:text-ink-muted-soft outline-none focus:border-[var(--primary-ck)] focus:ring-1 ' +
+    'focus:ring-[var(--primary-ck)] transition-colors';
+
 const AgentModal: React.FC<AgentModalProps> = ({ agent, onClose, onSuccess, getIdToken }) => {
     const { showAlert } = useAlert();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [formData, setFormData] = useState<Partial<Agent>>(
         agent || {
             nombre: '', tipo: 'Bot de Chat', descripcion: '', creador: '',
-            modelo: 'GPT-4o', estado: 'Activo', enlace: '', categoria: '',
-            division: 'Casa Matriz', casos_uso: [], beneficios: []
-        }
+            modelo: 'claude-sonnet-4-6', estado: 'Activo', enlace: '', categoria: '',
+            division: 'Corporativo', casos_uso: [], beneficios: [],
+        },
     );
     const [loading, setLoading] = useState(false);
     const [iconFile, setIconFile] = useState<File | null>(null);
     const [iconPreview, setIconPreview] = useState<string | null>(
-        agent?.icon_url ? resolveIconUrl(agent.icon_url) : null
+        agent?.icon_url ? resolveIconUrl(agent.icon_url) : null,
     );
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,7 +276,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, onClose, onSuccess, getI
         e.preventDefault();
         const token = await getIdToken();
         if (!token) {
-            showAlert("Usuario no autenticado", "error");
+            showAlert('Usuario no autenticado', 'error');
             return;
         }
         setLoading(true);
@@ -223,185 +301,280 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, onClose, onSuccess, getI
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const addArrayItem = (field: 'casos_uso' | 'beneficios') => {
-        setFormData(prev => ({ ...prev, [field]: [...(prev[field] || []), ''] }));
-    };
-
-    const updateArrayItem = (index: number, value: string, field: 'casos_uso' | 'beneficios') => {
-        setFormData(prev => {
-            const newArray = [...(prev[field] || [])];
-            newArray[index] = value;
-            return { ...prev, [field]: newArray };
+    const addArrayItem = (field: 'casos_uso' | 'beneficios') =>
+        setFormData((prev) => ({ ...prev, [field]: [...(prev[field] || []), ''] }));
+    const updateArrayItem = (index: number, value: string, field: 'casos_uso' | 'beneficios') =>
+        setFormData((prev) => {
+            const arr = [...(prev[field] || [])];
+            arr[index] = value;
+            return { ...prev, [field]: arr };
         });
-    };
-
-    const removeArrayItem = (index: number, field: 'casos_uso' | 'beneficios') => {
-        setFormData(prev => {
-            const newArray = [...(prev[field] || [])];
-            newArray.splice(index, 1);
-            return { ...prev, [field]: newArray };
+    const removeArrayItem = (index: number, field: 'casos_uso' | 'beneficios') =>
+        setFormData((prev) => {
+            const arr = [...(prev[field] || [])];
+            arr.splice(index, 1);
+            return { ...prev, [field]: arr };
         });
-    };
 
     return (
-        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
-                    <h3 className="text-xl font-bold">{agent ? 'Editar Agente' : 'Nuevo Agente'}</h3>
-                    <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full"><X size={20} /></button>
+        <div
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+            style={{ background: 'oklch(0.18 0.02 255 / 0.55)', backdropFilter: 'blur(4px)' }}
+        >
+            <div className="bg-bg-elev rounded-2xl shadow-pop w-full max-w-4xl max-h-[92vh] overflow-y-auto border border-border-soft">
+                {/* Sticky header */}
+                <div className="sticky top-0 bg-bg-elev/95 backdrop-blur border-b border-border-soft px-6 py-4 flex justify-between items-center z-10">
+                    <div>
+                        <div className="ck-mono text-[10.5px] tracking-wider text-ink-muted">
+                            {agent ? 'EDITAR AGENTE' : 'NUEVO AGENTE'}
+                        </div>
+                        <h3 className="ck-display text-[22px] leading-tight mt-0.5">
+                            {agent ? formData.nombre || 'Agente sin nombre' : 'Crear agente'}
+                        </h3>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="inline-flex items-center justify-center size-9 rounded-lg text-ink-muted hover:text-ink hover:bg-bg-inset transition-colors"
+                    >
+                        <X size={18} />
+                    </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                    {/* Sección de ícono */}
-                    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <div className="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                            {iconPreview ? (
-                                <img src={iconPreview} className="w-full h-full object-cover" alt="preview" />
-                            ) : (
-                                <Bot size={28} className="text-gray-400" />
-                            )}
+                <form onSubmit={handleSubmit} className="p-6 space-y-5 bg-bg">
+                    {/* ─── Identidad visual ─── */}
+                    <section className={SECTION_CLS}>
+                        <header className="flex items-center gap-2 mb-1">
+                            <ImageIcon size={14} style={{ color: 'var(--primary-ck)' }} />
+                            <span className="ck-mono text-[11px] tracking-wider text-ink-2">IDENTIDAD VISUAL</span>
+                        </header>
+                        <div className="flex items-center gap-4">
+                            <div className="size-16 rounded-xl bg-bg-inset border border-border-soft grid place-items-center overflow-hidden shrink-0">
+                                {iconPreview ? (
+                                    <img src={iconPreview} className="w-full h-full object-cover" alt="preview" />
+                                ) : (
+                                    <Bot size={26} className="text-ink-muted" />
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-[13px] font-medium text-ink mb-1">Ícono del agente</p>
+                                {agent ? (
+                                    <>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                                            onChange={handleFileSelect}
+                                            className="hidden"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="ck-btn ck-btn-outline"
+                                        >
+                                            <ImagePlus size={14} />
+                                            {iconFile ? 'Cambiar imagen' : agent.icon_url ? 'Reemplazar ícono' : 'Subir ícono'}
+                                        </button>
+                                        {iconFile && (
+                                            <p className="text-[11.5px] text-ink-muted mt-1.5">
+                                                {iconFile.name} — se subirá al guardar
+                                            </p>
+                                        )}
+                                    </>
+                                ) : (
+                                    <p className="text-[12px] text-ink-muted">
+                                        Crea y guarda el agente primero, después podrás subir un ícono.
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                        <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-700 mb-1">Ícono del agente</p>
-                            {agent ? (
-                                <>
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        accept="image/png,image/jpeg,image/webp,image/svg+xml"
-                                        onChange={handleFileSelect}
-                                        className="hidden"
-                                    />
+                    </section>
+
+                    {/* ─── Datos básicos ─── */}
+                    <section className={SECTION_CLS}>
+                        <header className="flex items-center gap-2 mb-1">
+                            <Settings size={14} style={{ color: 'var(--primary-ck)' }} />
+                            <span className="ck-mono text-[11px] tracking-wider text-ink-2">DATOS BÁSICOS</span>
+                        </header>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className={LABEL_CLS}>Nombre</label>
+                                <input required name="nombre" value={formData.nombre} onChange={handleChange} className={INPUT_CLS} />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>
+                                    Categoría <span className="text-ink-muted-soft font-normal">(no editable)</span>
+                                </label>
+                                <input
+                                    required
+                                    name="categoria"
+                                    value={formData.categoria}
+                                    onChange={handleChange}
+                                    disabled={!!agent}
+                                    className={INPUT_CLS + ' disabled:bg-bg-inset disabled:text-ink-muted'}
+                                />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>División</label>
+                                <input required name="division" value={formData.division} onChange={handleChange} className={INPUT_CLS} />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>Creador / equipo</label>
+                                <input required name="creador" value={formData.creador} onChange={handleChange} className={INPUT_CLS} />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>Tipo</label>
+                                <input required name="tipo" value={formData.tipo} onChange={handleChange} className={INPUT_CLS} />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>Estado</label>
+                                <select name="estado" value={formData.estado} onChange={handleChange} className={INPUT_CLS}>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                    <option value="En Desarrollo">En Desarrollo</option>
+                                </select>
+                            </div>
+                            <div className="md:col-span-2">
+                                <label className={LABEL_CLS}>Enlace</label>
+                                <input
+                                    name="enlace"
+                                    value={formData.enlace}
+                                    onChange={handleChange}
+                                    className={INPUT_CLS}
+                                    placeholder="https://… (opcional)"
+                                />
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ─── Funcionalidades ─── */}
+                    <section className={SECTION_CLS}>
+                        <header className="flex items-center gap-2 mb-1">
+                            <Sparkles size={14} style={{ color: 'var(--primary-ck)' }} />
+                            <span className="ck-mono text-[11px] tracking-wider text-ink-2">FUNCIONALIDADES</span>
+                        </header>
+                        <p className="text-[12.5px] text-ink-muted -mt-1">
+                            Estos campos definen qué hace el agente y cómo se presenta al usuario en el chat.
+                            La <span className="font-medium text-ink-2">descripción</span> y los{' '}
+                            <span className="font-medium text-ink-2">casos de uso</span> se inyectan al system
+                            prompt y guían el comportamiento del modelo.
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="md:col-span-2">
+                                <label className={LABEL_CLS}>Descripción funcional</label>
+                                <textarea
+                                    required
+                                    name="descripcion"
+                                    value={formData.descripcion}
+                                    onChange={handleChange}
+                                    rows={3}
+                                    className={INPUT_CLS}
+                                    placeholder="Qué hace este agente, en qué dominio opera y a quién está dirigido."
+                                />
+                            </div>
+                            <div>
+                                <label className={LABEL_CLS}>Modelo</label>
+                                <input
+                                    required
+                                    name="modelo"
+                                    value={formData.modelo}
+                                    onChange={handleChange}
+                                    className={INPUT_CLS}
+                                    placeholder="claude-sonnet-4-6 / gpt-4o / etc."
+                                />
+                            </div>
+                            <div className="hidden md:block" />
+
+                            {/* Casos de uso */}
+                            <div className="md:col-span-2">
+                                <label className="flex items-center gap-1.5 text-[12px] font-medium text-ink-2 mb-2">
+                                    <ListChecks size={13} style={{ color: 'var(--primary-ck)' }} />
+                                    Casos de uso
+                                </label>
+                                <div className="space-y-2">
+                                    {formData.casos_uso?.map((item, index) => (
+                                        <div key={index} className="flex gap-2 items-start">
+                                            <span className="ck-mono text-[11px] text-ink-muted-soft pt-2.5 w-5 text-right">
+                                                {index + 1}
+                                            </span>
+                                            <input
+                                                value={item}
+                                                onChange={(e) => updateArrayItem(index, e.target.value, 'casos_uso')}
+                                                className={INPUT_CLS}
+                                                placeholder="Ej. Resumir reportes semanales de ventas"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeArrayItem(index, 'casos_uso')}
+                                                className="p-2.5 text-ink-muted hover:text-red-600 hover:bg-bg-inset rounded-lg transition-colors border border-transparent hover:border-border-soft"
+                                                title="Eliminar"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
                                     <button
                                         type="button"
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-plataforma-naranja hover:text-plataforma-naranja transition-colors"
+                                        onClick={() => addArrayItem('casos_uso')}
+                                        className="ck-btn ck-btn-outline"
                                     >
-                                        <ImagePlus size={14} />
-                                        {iconFile ? 'Cambiar imagen' : (agent.icon_url ? 'Reemplazar ícono' : 'Subir ícono')}
+                                        <Plus size={14} /> Agregar caso de uso
                                     </button>
-                                    {iconFile && (
-                                        <p className="text-xs text-gray-500 mt-1">{iconFile.name} — se subirá al guardar</p>
-                                    )}
-                                </>
-                            ) : (
-                                <p className="text-xs text-gray-500">Guarda el agente primero para subir un ícono</p>
-                            )}
-                        </div>
-                    </div>
+                                </div>
+                            </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                            <input required name="nombre" value={formData.nombre} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Categoría <span className="text-xs font-normal text-gray-500">(Partition key)</span></label>
-                            <input required name="categoria" value={formData.categoria} onChange={handleChange} disabled={!!agent} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja disabled:bg-gray-100" />
-                        </div>
-                        <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                            <textarea required name="descripcion" value={formData.descripcion} onChange={handleChange} rows={3} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">División</label>
-                            <input required name="division" value={formData.division} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Creador</label>
-                            <input required name="creador" value={formData.creador} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Modelo</label>
-                            <input required name="modelo" value={formData.modelo} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                            <input required name="tipo" value={formData.tipo} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                            <select name="estado" value={formData.estado} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja">
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                                <option value="En Desarrollo">En Desarrollo</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Enlace</label>
-                            <input name="enlace" value={formData.enlace} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja" placeholder="https://..." />
-                        </div>
-                        <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Casos de Uso</label>
-                            <div className="space-y-2">
-                                {formData.casos_uso?.map((item, index) => (
-                                    <div key={index} className="flex gap-2 items-start">
-                                        <input
-                                            value={item}
-                                            onChange={(e) => updateArrayItem(index, e.target.value, 'casos_uso')}
-                                            className="flex-1 px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja"
-                                            placeholder="Describa el caso de uso..."
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeArrayItem(index, 'casos_uso')}
-                                            className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
-                                            title="Eliminar"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                ))}
-                                <button
-                                    type="button"
-                                    onClick={() => addArrayItem('casos_uso')}
-                                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-plataforma-naranja bg-orange-50 border border-orange-100 rounded-lg hover:bg-orange-100 transition-colors"
-                                >
-                                    <Plus size={16} /> Agregar Caso de Uso
-                                </button>
+                            {/* Beneficios */}
+                            <div className="md:col-span-2">
+                                <label className="flex items-center gap-1.5 text-[12px] font-medium text-ink-2 mb-2">
+                                    <Award size={13} style={{ color: 'var(--primary-ck)' }} />
+                                    Beneficios
+                                </label>
+                                <div className="space-y-2">
+                                    {formData.beneficios?.map((item, index) => (
+                                        <div key={index} className="flex gap-2 items-start">
+                                            <span className="ck-mono text-[11px] text-ink-muted-soft pt-2.5 w-5 text-right">
+                                                {index + 1}
+                                            </span>
+                                            <input
+                                                value={item}
+                                                onChange={(e) => updateArrayItem(index, e.target.value, 'beneficios')}
+                                                className={INPUT_CLS}
+                                                placeholder="Ej. Ahorra 4h por semana al equipo de operaciones"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeArrayItem(index, 'beneficios')}
+                                                className="p-2.5 text-ink-muted hover:text-red-600 hover:bg-bg-inset rounded-lg transition-colors border border-transparent hover:border-border-soft"
+                                                title="Eliminar"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={() => addArrayItem('beneficios')}
+                                        className="ck-btn ck-btn-outline"
+                                    >
+                                        <Plus size={14} /> Agregar beneficio
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                    </section>
 
-                        <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Beneficios</label>
-                            <div className="space-y-2">
-                                {formData.beneficios?.map((item, index) => (
-                                    <div key={index} className="flex gap-2 items-start">
-                                        <input
-                                            value={item}
-                                            onChange={(e) => updateArrayItem(index, e.target.value, 'beneficios')}
-                                            className="flex-1 px-3 py-2 border rounded-lg focus:ring-1 focus:ring-plataforma-naranja"
-                                            placeholder="Describa el beneficio..."
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeArrayItem(index, 'beneficios')}
-                                            className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
-                                            title="Eliminar"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                ))}
-                                <button
-                                    type="button"
-                                    onClick={() => addArrayItem('beneficios')}
-                                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-plataforma-turquesa bg-teal-50 border border-teal-100 rounded-lg hover:bg-teal-100 transition-colors"
-                                >
-                                    <Plus size={16} /> Agregar Beneficio
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-8 flex justify-end gap-3 pt-4 border-t">
-                        <button type="button" onClick={onClose} className="px-4 py-2 font-medium text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
-                        <button type="submit" disabled={loading} className="px-6 py-2 bg-plataforma-naranja text-white font-medium rounded-lg hover:bg-orange-600 disabled:opacity-50 flex items-center gap-2">
-                            <Save size={16} />
-                            {loading ? 'Guardando...' : 'Guardar'}
+                    {/* Footer */}
+                    <div className="flex justify-end gap-2.5 pt-4 border-t border-border-soft -mx-6 px-6 -mb-6 pb-6 sticky bottom-0 bg-bg-elev/95 backdrop-blur">
+                        <button type="button" onClick={onClose} className="ck-btn ck-btn-ghost">
+                            Cancelar
+                        </button>
+                        <button type="submit" disabled={loading} className="ck-btn ck-btn-primary">
+                            <Save size={14} />
+                            {loading ? 'Guardando…' : agent ? 'Guardar cambios' : 'Crear agente'}
                         </button>
                     </div>
                 </form>
