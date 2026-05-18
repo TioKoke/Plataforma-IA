@@ -39,7 +39,7 @@ export const ChatTestPanel = ({ messages, isExecuting, canExecute, onSend, onCle
     const hasAIResponse = messages.some(m => m.role === 'assistant' && !m.isLoading && m.content);
 
     return (
-        <aside className="w-72 bg-white border-l border-slate-200 flex flex-col h-full shrink-0 shadow-sm">
+        <aside className="w-[340px] bg-bg-elev border-l border-border-soft flex flex-col h-full shrink-0">
 
             {/* ── Header ── */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0">

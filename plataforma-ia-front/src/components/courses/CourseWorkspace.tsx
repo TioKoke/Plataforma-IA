@@ -97,6 +97,14 @@ const CourseWorkspaceContent = () => {
     /* ── Chat state ── */
     const [chatMessages, setChatMessages] = useState<ChatMsg[]>([]);
 
+    /* ── Lock body scroll while in workspace ── */
+    useEffect(() => {
+        if (!guided) return;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = prev; };
+    }, [guided]);
+
     /* ── Execution state ── */
     const [isExecuting, setIsExecuting] = useState(false);
     const [execLog, setExecLog] = useState<LogEntry[]>([]);
@@ -423,16 +431,13 @@ const CourseWorkspaceContent = () => {
     if (!guided) return <CourseSelectScreen onSelectLesson={handleSelectLesson} progress={progress} />;
 
     /* ════════════════════════════════════════════════════════════════════
-       RENDER — workspace mode (fija altura para ajustarse a la pantalla)
+       RENDER — workspace mode (overlay full-viewport, ocupa toda la pantalla)
     ════════════════════════════════════════════════════════════════════ */
     return (
-        <div
-            className="flex flex-col w-full bg-bg-elev text-ink rounded-[14px] border border-border-soft overflow-hidden shadow-sm"
-            style={{ height: 'calc(100vh - 180px)', minHeight: 580 }}
-        >
+        <div className="fixed inset-0 z-50 flex flex-col bg-bg text-ink overflow-hidden">
 
             {/* ── Top header ── */}
-            <div className="h-14 bg-bg-elev border-b border-border-soft flex items-center justify-between px-4 shrink-0">
+            <div className="h-14 bg-bg-elev border-b border-border-soft flex items-center justify-between px-5 shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                     <div
                         className="size-8 rounded-lg grid place-items-center shrink-0"

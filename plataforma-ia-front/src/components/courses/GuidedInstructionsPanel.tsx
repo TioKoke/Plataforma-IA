@@ -154,7 +154,7 @@ export const GuidedInstructionsPanel = ({
         : null;
 
     return (
-        <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full overflow-hidden shrink-0">
+        <aside className="w-[340px] bg-bg-elev border-r border-border-soft flex flex-col h-full overflow-hidden shrink-0">
 
             {/* Panel header — course + lesson breadcrumb */}
             <div className="px-4 pt-4 pb-3 border-b border-slate-100 shrink-0">
