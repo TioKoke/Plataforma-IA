@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useChat } from '../hooks/useChat';
 import { Link, useSearchParams } from 'react-router-dom';
 import { fetchAgents, type Agent } from '../services/agentsApi';
-import { Send, Bot, Sparkles, AlertCircle, Paperclip, X, FileText, Image as ImageIcon, Download, ClipboardList, SquarePen, Clock, Plus, Mail, Database, Terminal, Loader2, ChevronRight, ChevronDown, Globe, Layers, CheckCircle2, Circle } from 'lucide-react';
+import { Send, Bot, Sparkles, AlertCircle, Paperclip, X, FileText, Image as ImageIcon, Download, ClipboardList, SquarePen, Clock, Plus, Mail, Database, Terminal, Loader2, ChevronRight, ChevronDown, Globe, Layers, CheckCircle2, Circle, Square } from 'lucide-react';
 import MessageActions from '../components/chat/MessageActions';
 import { ConversationsList } from '../components/chat/ConversationsList';
 import { fetchConversationMessages } from '../services/conversationsApi';
@@ -30,18 +30,19 @@ const ThinkingProcess = ({
   if (!thought && (!steps || steps.length === 0) && !isThinking) return null;
 
   return (
-    <div className={`mb-3 w-full max-w-full border rounded-xl px-3 py-2.5 transition-colors duration-300 ${
-      isThinking
-        ? 'bg-plataforma-turquesa/5 border-plataforma-turquesa/20'
-        : 'bg-slate-50 border-slate-100'
-    }`}>
+    <div
+      className="mb-3 w-full max-w-full border rounded-xl px-3 py-2.5 transition-colors duration-300"
+      style={{
+        background: isThinking ? 'var(--primary-soft)' : 'var(--bg-muted)',
+        borderColor: isThinking ? 'color-mix(in oklab, var(--primary-ck) 25%, transparent)' : 'var(--border-soft)',
+      }}
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         aria-expanded={isExpanded}
         aria-label={isExpanded ? 'Colapsar pensamiento del agente' : 'Expandir pensamiento del agente'}
-        className={`flex items-center gap-2 transition-colors text-xs font-medium group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-plataforma-naranja rounded ${
-          isThinking ? 'text-plataforma-turquesa hover:text-plataforma-verde-oscuro' : 'text-slate-400 hover:text-slate-600'
-        }`}
+        className="flex items-center gap-2 transition-colors text-xs font-medium group focus-visible:outline-none focus-visible:ring-2 rounded"
+        style={{ color: isThinking ? 'var(--primary-ck)' : 'var(--ink-muted)' }}
       >
         <motion.div
           animate={{ rotate: isExpanded ? 0 : -90 }}
@@ -55,9 +56,9 @@ const ThinkingProcess = ({
             : 'Pensamiento del agente'}
           {isThinking && (
             <span className="flex gap-1" aria-hidden="true">
-              <span className="w-1 h-1 bg-plataforma-turquesa rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
-              <span className="w-1 h-1 bg-plataforma-turquesa rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-              <span className="w-1 h-1 bg-plataforma-turquesa rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+              <span className="w-1 h-1 rounded-full animate-bounce" style={{ background: 'var(--primary-ck)', animationDelay: '0s' }}></span>
+              <span className="w-1 h-1 rounded-full animate-bounce" style={{ background: 'var(--primary-ck)', animationDelay: '0.2s' }}></span>
+              <span className="w-1 h-1 rounded-full animate-bounce" style={{ background: 'var(--primary-ck)', animationDelay: '0.4s' }}></span>
             </span>
           )}
         </span>
@@ -71,9 +72,14 @@ const ThinkingProcess = ({
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className={`mt-2 ml-1 pl-4 border-l-2 space-y-3 transition-colors duration-300 ${
-              isThinking ? 'border-plataforma-turquesa/30' : 'border-slate-100'
-            }`}>
+            <div
+              className="mt-2 ml-1 pl-4 border-l-2 space-y-3 transition-colors duration-300"
+              style={{
+                borderColor: isThinking
+                  ? 'color-mix(in oklab, var(--primary-ck) 30%, transparent)'
+                  : 'var(--border-soft)',
+              }}
+            >
               {isThinking && (!steps || steps.length === 0) && (
                 <AnimatePresence mode="wait">
                   <motion.p
@@ -82,14 +88,15 @@ const ThinkingProcess = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.25 }}
-                    className="text-sm text-slate-400 italic"
+                    className="text-sm italic"
+                    style={{ color: 'var(--ink-muted)' }}
                   >
                     {thinkingLabel ?? 'analizando tu consulta...'}
                   </motion.p>
                 </AnimatePresence>
               )}
               {thought && (
-                <div className="text-sm text-slate-500 italic leading-relaxed whitespace-pre-line">
+                <div className="text-sm italic leading-relaxed whitespace-pre-line" style={{ color: 'var(--ink-2)' }}>
                   {thought}
                 </div>
               )}
@@ -106,20 +113,24 @@ const ThinkingProcess = ({
                       role="listitem"
                     >
                       <div className="mt-0.5">
-                        {step.status === 'completed' && <CheckCircle2 size={14} className="text-plataforma-verde-oscuro" aria-label="Completado" />}
-                        {step.status === 'running' && <Loader2 size={14} className="text-plataforma-turquesa animate-spin" aria-label="En progreso" />}
-                        {step.status === 'pending' && <Circle size={14} className="text-slate-300" aria-label="Pendiente" />}
+                        {step.status === 'completed' && <CheckCircle2 size={14} style={{ color: 'var(--success-ck)' }} aria-label="Completado" />}
+                        {step.status === 'running' && <Loader2 size={14} className="animate-spin" style={{ color: 'var(--primary-ck)' }} aria-label="En progreso" />}
+                        {step.status === 'pending' && <Circle size={14} style={{ color: 'var(--border-strong)' }} aria-label="Pendiente" />}
                         {step.status === 'failed' && <X size={14} className="text-plataforma-rojo" aria-label="Fallido" />}
                       </div>
                       <div className="flex-1">
-                        <p className={`text-xs ${
-                          step.status === 'running' ? 'text-plataforma-turquesa font-semibold' :
-                          step.status === 'completed' ? 'text-slate-600 font-medium' : 'text-slate-400 font-medium'
-                        }`}>
+                        <p
+                          className="text-xs font-medium"
+                          style={{
+                            color: step.status === 'running' ? 'var(--primary-ck)' :
+                              step.status === 'completed' ? 'var(--ink-2)' : 'var(--ink-muted)',
+                            fontWeight: step.status === 'running' ? 600 : 500,
+                          }}
+                        >
                           {step.title}
                         </p>
                         {step.details && isThinking && step.status === 'running' && (
-                          <p className="text-[10px] text-slate-400 mt-0.5 animate-pulse">
+                          <p className="text-[10px] mt-0.5 animate-pulse" style={{ color: 'var(--ink-muted)' }}>
                             {step.details}
                           </p>
                         )}
@@ -134,7 +145,8 @@ const ThinkingProcess = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.25 }}
-                        className="text-sm text-slate-400 italic"
+                        className="text-sm italic"
+                        style={{ color: 'var(--ink-muted)' }}
                       >
                         {thinkingLabel}
                       </motion.p>
@@ -371,7 +383,7 @@ const AVAILABLE_INTEGRATIONS: IntegrationMeta[] = [
 
 const ChatPage = () => {
   const { userEmail, userName, userDivision, userPhoto, isAdmin } = useAuth();
-  const { messages, setMessages, streamingState, setStreamingState, conversationId, setConversationId, setAgentId, connectionError, sendMessage: wsSendMessage, regenerate: wsRegenerate, interactedComponents, markComponentInteracted, resetInteractions } = useChat(API_URL);
+  const { messages, setMessages, streamingState, setStreamingState, conversationId, setConversationId, setAgentId, connectionError, sendMessage: wsSendMessage, regenerate: wsRegenerate, stopStreaming: wsStop, interactedComponents, markComponentInteracted, resetInteractions } = useChat(API_URL);
   const [searchParams] = useSearchParams();
   // Metadata del agente activo (si /chat?agent=xxx). Se usa para el header.
   const [activeAgent, setActiveAgent] = useState<Agent | null>(null);
@@ -1025,20 +1037,22 @@ const ChatPage = () => {
                         className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}
                       >
                         <div className={`flex items-start min-w-0 ${message.sender === 'user' ? 'max-w-[70%] flex-row-reverse' : 'max-w-[90%] flex-row'}`}>
-                          <div className={`flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center overflow-hidden shadow-sm ${message.sender === 'user'
-                            ? 'bg-plataforma-gris-oscuro ml-3'
-                            : 'bg-slate-200 mr-3'
-                            }`}>
+                          <div
+                            className={`flex-shrink-0 size-8 rounded-[10px] grid place-items-center overflow-hidden ${
+                              message.sender === 'user' ? 'ml-3' : 'mr-3'
+                            }`}
+                            style={{ background: 'var(--ink)', color: 'var(--bg-elev)' }}
+                          >
                             {message.sender === 'user' ? (
                               userPhoto ? (
                                 <img src={userPhoto} alt={userName ?? 'Usuario'} className="w-full h-full object-cover" />
                               ) : (
-                                <span className="text-white text-xs font-bold">
+                                <span className="text-xs font-bold">
                                   {(userName ?? '?').split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase()}
                                 </span>
                               )
                             ) : (
-                              <Bot size={18} className="text-plataforma-gris-oscuro" />
+                              <Bot size={16} />
                             )}
                           </div>
                           <div className={`flex flex-col min-w-0 overflow-hidden ${message.sender === 'user' ? 'items-end' : 'items-start'} gap-1.5 group`}>
@@ -1108,10 +1122,22 @@ const ChatPage = () => {
                                 onRetry={() => handleRetry(message)}
                               />
                             ) : message.content && (
-                              <div className={`px-4 py-3 shadow-sm ${message.sender === 'user'
-                                ? 'bg-plataforma-gris-oscuro text-white rounded-2xl rounded-tr-sm'
-                                : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm'
-                                }`}>
+                              <div
+                                className={`px-4 py-3 ${
+                                  message.sender === 'user'
+                                    ? 'text-white rounded-2xl rounded-tr-sm'
+                                    : 'rounded-2xl rounded-tl-sm border'
+                                }`}
+                                style={
+                                  message.sender === 'user'
+                                    ? { background: 'var(--ink)' }
+                                    : {
+                                        background: 'var(--bg-elev)',
+                                        borderColor: 'var(--border-soft)',
+                                        boxShadow: '0 1px 0 oklch(0.92 0.005 250 / 1), 0 1px 2px oklch(0.18 0.02 255 / 0.04)',
+                                      }
+                                }
+                              >
                                 {message.sender === 'user' ? (
                                   <div className="space-y-1">
                                     <div
@@ -1258,7 +1284,22 @@ const ChatPage = () => {
                                     })()}
                                   </div>
                                 )}
-                                <div className={`text-[10px] mt-1.5 flex items-center justify-end gap-3 ${message.sender === 'user' ? 'text-white/70' : 'text-gray-400'}`}>
+                                <div
+                                  className="text-[10px] mt-1.5 flex items-center justify-end gap-3"
+                                  style={{ color: message.sender === 'user' ? 'rgba(255,255,255,0.7)' : 'var(--ink-muted)' }}
+                                >
+                                  {message.sender === 'ai' && message.wasStopped && (
+                                    <span
+                                      className="px-1.5 py-0.5 rounded-full text-[9.5px] font-medium uppercase tracking-wide"
+                                      style={{
+                                        background: 'var(--bg-inset)',
+                                        color: 'var(--ink-muted)',
+                                        border: '1px solid var(--border-soft)',
+                                      }}
+                                    >
+                                      Detenido
+                                    </span>
+                                  )}
                                   {message.sender === 'ai' && message.responseTime !== undefined && (
                                     <div className="flex items-center gap-1">
                                       <Clock size={10} />
@@ -1289,8 +1330,11 @@ const ChatPage = () => {
                   {streamingState && (
                     <div className="flex justify-start animate-fadeIn" ref={lastAiMessageRef}>
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center bg-slate-200 mr-3 shadow-sm">
-                          <Bot size={16} className="text-plataforma-gris-oscuro" />
+                        <div
+                          className="flex-shrink-0 size-8 rounded-[10px] grid place-items-center mr-3"
+                          style={{ background: 'var(--ink)', color: 'var(--bg-elev)' }}
+                        >
+                          <Bot size={16} />
                         </div>
                         <div className="flex flex-col gap-1 w-full">
                           <ThinkingProcess
@@ -1306,9 +1350,16 @@ const ChatPage = () => {
                             />
                           )}
                           {streamingState.content && (
-                            <div className="px-4 py-3 bg-white border border-slate-200 shadow-sm rounded-2xl rounded-tl-sm max-w-full">
+                            <div
+                              className="px-4 py-3 border rounded-2xl rounded-tl-sm max-w-full"
+                              style={{
+                                background: 'var(--bg-elev)',
+                                borderColor: 'var(--border-soft)',
+                                boxShadow: '0 1px 0 oklch(0.92 0.005 250 / 1), 0 1px 2px oklch(0.18 0.02 255 / 0.04)',
+                              }}
+                            >
                               <MarkdownMessage content={streamingState.content} className="text-gray-800" isStreaming={true} />
-                              <span className="inline-block w-0.5 h-4 bg-slate-400 ml-0.5 animate-pulse align-middle" />
+                              <span className="inline-block w-0.5 h-4 ml-0.5 animate-pulse align-middle" style={{ background: 'var(--ink-muted)' }} />
                             </div>
                           )}
                           {streamingState.pendingFiles.length > 0 && (
@@ -1395,11 +1446,16 @@ const ChatPage = () => {
 
               {/* Unified input container */}
               <div
-                className={`flex flex-col rounded-2xl border bg-white transition-all shadow-sm ${
-                  isDragging
-                    ? 'border-plataforma-naranja border-dashed bg-plataforma-naranja/5'
-                    : 'border-slate-300 hover:border-slate-400 focus-within:border-plataforma-naranja/50 focus-within:ring-4 focus-within:ring-plataforma-naranja/5'
+                className={`flex flex-col rounded-2xl border transition-all ${
+                  isDragging ? 'border-dashed' : ''
                 }`}
+                style={{
+                  background: 'var(--bg-elev)',
+                  borderColor: isDragging
+                    ? 'var(--primary-ck)'
+                    : 'var(--border-soft)',
+                  boxShadow: '0 1px 0 oklch(0.92 0.005 250 / 1), 0 1px 2px oklch(0.18 0.02 255 / 0.04)',
+                }}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -1430,13 +1486,13 @@ const ChatPage = () => {
                       onPaste={handlePaste}
                       placeholder="Escribe tu pregunta sobre IA en minería..."
                       rows={1}
-                      className="w-full bg-transparent border-none text-sm resize-none focus:outline-none text-slate-800 placeholder-slate-400 py-1"
-                      style={{ minHeight: '32px', maxHeight: '160px', overflowY: 'auto' }}
+                      className="w-full bg-transparent border-none text-sm resize-none focus:outline-none py-1"
+                      style={{ minHeight: '32px', maxHeight: '160px', overflowY: 'auto', color: 'var(--ink)' }}
                       disabled={!!streamingState}
                     />
                     {isDragging && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-white/60 rounded-t-2xl z-10">
-                        <p className="text-sm font-medium text-plataforma-naranja">Suelta los archivos aquí</p>
+                        <p className="text-sm font-medium" style={{ color: 'var(--primary-ck)' }}>Suelta los archivos aquí</p>
                       </div>
                     )}
                   </div>
@@ -1445,7 +1501,7 @@ const ChatPage = () => {
                 {/* Divider + Action Bar — hidden when quick_reply/select selector is active */}
                 {(!pendingUISpec || pendingUISpec.spec.type === 'confirm') && (
                   <>
-                    <div className="border-t border-slate-100 mx-3" />
+                    <div className="mx-3 border-t" style={{ borderColor: 'var(--border-soft)' }} />
 
                     <div className="flex items-center justify-between px-3 py-2">
                       <div className="flex-1 flex justify-start">
@@ -1454,11 +1510,14 @@ const ChatPage = () => {
                           <button
                             onClick={() => setIsPlusMenuOpen(!isPlusMenuOpen)}
                             disabled={!!streamingState}
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 ${
-                              isPlusMenuOpen
-                                ? 'bg-plataforma-naranja text-white rotate-45 shadow-md shadow-plataforma-naranja/20'
-                                : 'text-slate-400 hover:text-plataforma-gris-oscuro hover:bg-slate-100'
+                            className={`size-9 rounded-xl grid place-items-center transition-all disabled:opacity-40 ${
+                              isPlusMenuOpen ? 'rotate-45' : ''
                             }`}
+                            style={
+                              isPlusMenuOpen
+                                ? { background: 'var(--ink)', color: 'var(--bg-elev)' }
+                                : { background: 'transparent', color: 'var(--ink-muted)' }
+                            }
                             title="Adjuntar"
                           >
                             <Plus size={20} />
@@ -1518,32 +1577,66 @@ const ChatPage = () => {
                       </div>
 
                       {/* Keyboard Hints - Centered */}
-                      <div className="hidden sm:flex flex-1 justify-center items-center gap-2 text-[10px] text-slate-400 font-medium whitespace-nowrap">
+                      <div
+                        className="hidden sm:flex flex-1 justify-center items-center gap-2 text-[10px] font-medium whitespace-nowrap"
+                        style={{ color: 'var(--ink-muted)' }}
+                      >
                         <span className="flex items-center gap-1">
-                          <kbd className="px-1 py-0.5 bg-slate-50 rounded border border-slate-200 min-w-[20px] text-center">↵</kbd>
+                          <kbd
+                            className="px-1 py-0.5 rounded border min-w-[20px] text-center"
+                            style={{ background: 'var(--bg-muted)', borderColor: 'var(--border-soft)' }}
+                          >↵</kbd>
                           enviar
                         </span>
-                        <span className="text-slate-200">|</span>
+                        <span style={{ color: 'var(--border-strong)' }}>|</span>
                         <span className="flex items-center gap-1">
-                          <kbd className="px-1 py-0.5 bg-slate-50 rounded border border-slate-200">Shift</kbd>
+                          <kbd
+                            className="px-1 py-0.5 rounded border"
+                            style={{ background: 'var(--bg-muted)', borderColor: 'var(--border-soft)' }}
+                          >Shift</kbd>
                           <span>+</span>
-                          <kbd className="px-1 py-0.5 bg-slate-50 rounded border border-slate-200 min-w-[20px] text-center">↵</kbd>
+                          <kbd
+                            className="px-1 py-0.5 rounded border min-w-[20px] text-center"
+                            style={{ background: 'var(--bg-muted)', borderColor: 'var(--border-soft)' }}
+                          >↵</kbd>
                           nueva línea
                         </span>
                       </div>
 
                       <div className="flex-1 flex items-center justify-end gap-3">
-                        {inputValue.length > 0 && (
-                          <span className="text-[11px] text-slate-400 font-medium tabular-nums">{inputValue.length}</span>
+                        {inputValue.length > 0 && !streamingState && (
+                          <span className="text-[11px] font-medium tabular-nums" style={{ color: 'var(--ink-muted)' }}>{inputValue.length}</span>
                         )}
-                        <button
-                          onClick={handleSendMessage}
-                          disabled={(!inputValue.trim() && attachedFiles.length === 0 && pastedTexts.length === 0) || !!streamingState}
-                          className="w-9 h-9 bg-plataforma-naranja text-white rounded-xl flex items-center justify-center hover:bg-plataforma-naranja/90 active:scale-95 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-md shadow-plataforma-naranja/10"
-                          title="Enviar (Enter)"
-                        >
-                          {streamingState ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
-                        </button>
+                        {streamingState ? (
+                          <button
+                            onClick={wsStop}
+                            className="size-9 rounded-xl grid place-items-center active:scale-95 transition-all"
+                            style={{
+                              background: 'var(--ink)',
+                              color: 'var(--bg-elev)',
+                              boxShadow: '0 1px 0 oklch(0.20 0.02 255 / 0.05), inset 0 1px 0 oklch(1 0 0 / 0.15)',
+                            }}
+                            title="Detener generación"
+                            aria-label="Detener generación"
+                          >
+                            <Square size={14} fill="currentColor" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={handleSendMessage}
+                            disabled={!inputValue.trim() && attachedFiles.length === 0 && pastedTexts.length === 0}
+                            className="size-9 rounded-xl grid place-items-center active:scale-95 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                            style={{
+                              background: 'var(--primary-ck)',
+                              color: 'var(--primary-fg)',
+                              boxShadow: '0 1px 0 oklch(0.20 0.02 255 / 0.05), inset 0 1px 0 oklch(1 0 0 / 0.15)',
+                            }}
+                            title="Enviar (Enter)"
+                            aria-label="Enviar"
+                          >
+                            <Send size={18} />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </>

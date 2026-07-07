@@ -399,6 +399,39 @@ export function useChat(apiUrl: string) {
     []
   );
 
+  const stopStreaming = useCallback(() => {
+    const prev = streamingStateRef.current;
+    if (!prev) return;
+
+    // Commit lo que se haya alcanzado a recibir como mensaje normal (con marca de
+    // detenido) para no perder el contexto visible para el usuario.
+    if (prev.content.length > 0 || prev.uiComponents.length > 0 || prev.steps.length > 0 || prev.pendingFiles.length > 0) {
+      const finalContent = stripRenderedComponentBlocks(prev.content, prev.uiComponents);
+      const partialMsg: ChatMessage = {
+        id: prev.messageId,
+        content: finalContent || '_Respuesta detenida._',
+        sender: 'ai',
+        timestamp: new Date(),
+        characterCount: finalContent.length,
+        steps: prev.steps.length > 0 ? prev.steps : undefined,
+        files: prev.pendingFiles.length > 0 ? prev.pendingFiles : undefined,
+        uiComponents: prev.uiComponents.length > 0 ? prev.uiComponents : undefined,
+        wasStopped: true,
+      };
+      setMessages(m => [...m, partialMsg]);
+    }
+    streamEndRanRef.current = true;
+    setStreamingState(null);
+
+    // Cerrar el WS para abortar el stream del backend. onclose se encarga del
+    // reconnect con backoff, así que el chat queda listo para el siguiente turno.
+    try {
+      wsRef.current?.close();
+    } catch {
+      // noop
+    }
+  }, []);
+
   const regenerate = useCallback(
     (userContext?: UserContext) => {
       if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
@@ -459,6 +492,7 @@ export function useChat(apiUrl: string) {
     connectionError,
     sendMessage,
     regenerate,
+    stopStreaming,
     connect,
     disconnect,
     interactedComponents,

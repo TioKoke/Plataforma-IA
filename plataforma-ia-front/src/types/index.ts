@@ -17,6 +17,7 @@ export type ChatMessage = {
   retryAfter?: number | null;
   isRetryable?: boolean;
   isStreaming?: boolean;
+  wasStopped?: boolean;
   thought?: string;
   steps?: {
     id: string;
